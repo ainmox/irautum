@@ -6,7 +6,6 @@
 
 | Parameter            | Type           | Summary                                                               |
 |----------------------|----------------|-----------------------------------------------------------------------|
-| `admin`              | `address`      | The administrator of the pool                                         |
 | `reserveFactor`      | `UFixed16x4`   | The proportion of the accrued interest that is retained for reserves  |
 | `minimumBorrowRate`  | `UFixed80x18`  | The borrow rate when the utilization is at its minimum value          |
 | `maximumBorrowRate`  | `UFixed80x18`  | The borrow rate when the utilization is at its maximum value          |
