@@ -27,7 +27,7 @@ interface IIrautumAssetPool is IERC4626 {
     /// @return The optimal borrow rate
     function optimalBorrowRate() external view returns (UFixed80x18);
 
-    /// @notice The utilization rate that the pool that the pool targets to maintain
+    /// @notice The utilization that the pool is attempting to maintain
     /// @return The optimal utilization
     function optimalUtilization() external view returns (UFixed16x4);
 
