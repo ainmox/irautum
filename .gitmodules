@@ -4,3 +4,6 @@
 [submodule "lib/solidity-fixed-point"]
 	path = lib/solidity-fixed-point
 	url = https://github.com/ainmox/solidity-fixed-point
+[submodule "lib/solidity-standard-interfaces"]
+	path = lib/solidity-standard-interfaces
+	url = https://github.com/ainmox/solidity-standard-interfaces
