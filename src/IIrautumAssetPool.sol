@@ -44,6 +44,7 @@ interface IIrautumAssetPool is IERC4626 {
     function supplyRate() external view returns (UFixed80x18);
 
     /// @notice The last recorded state of the pool
+    /// @return lastTotalBorrowed The last recorded total borrowed assets plus interest
     /// @return lastTotalReserves The last recorded total reserves
     /// @return lastBorrowGrowthFactor The last recorded borrow growth factor
     /// @return lastSyncTimestamp The last recorded time that the pool was synchronized
@@ -51,12 +52,14 @@ interface IIrautumAssetPool is IERC4626 {
         external
         view
         returns (
+            uint256 lastTotalBorrowed,
             uint256 lastTotalReserves,
             UFixed256x18 lastBorrowGrowthFactor,
             uint256 lastSyncTimestamp
         );
 
     /// @notice Previews synchronizing the state of the pool
+    /// @return totalBorrowed The total borrowed assets plus interest
     /// @return totalReserves The total reserves
     /// @return borrowGrowthFactor The borrow growth factor
     /// @return lastSyncTimestamp The last recorded time that the pool was synchronized, excluding this call
@@ -64,12 +67,14 @@ interface IIrautumAssetPool is IERC4626 {
         external
         view
         returns (
+            uint256 totalBorrowed,
             uint256 totalReserves,
             UFixed256x18 borrowGrowthFactor,
             uint256 lastSyncTimestamp
         );
 
     /// @notice Synchronizes the state of the pool
+    /// @return totalBorrowed The total borrowed assets plus interest
     /// @return totalReserves The total reserves
     /// @return borrowGrowthFactor The borrow growth factor
     /// @return lastSyncTimestamp The last recorded time that the pool was synchronized, excluding this call
@@ -77,6 +82,7 @@ interface IIrautumAssetPool is IERC4626 {
         external
         view
         returns (
+            uint256 totalBorrowed,
             uint256 totalReserves,
             UFixed256x18 borrowGrowthFactor,
             uint256 lastSyncTimestamp
