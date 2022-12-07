@@ -42,4 +42,43 @@ interface IIrautumAssetPool is IERC4626 {
     /// @notice The current per second rate that lenders accrue interest
     /// @return The supply rate
     function supplyRate() external view returns (UFixed80x18);
+
+    /// @notice The last recorded state of the pool
+    /// @return lastTotalReserves The last recorded total reserves
+    /// @return lastBorrowGrowthFactor The last recorded borrow growth factor
+    /// @return lastSyncTimestamp The last recorded time that the pool was synchronized
+    function state()
+        external
+        view
+        returns (
+            uint256 lastTotalReserves,
+            UFixed256x18 lastBorrowGrowthFactor,
+            uint256 lastSyncTimestamp
+        );
+
+    /// @notice Previews synchronizing the state of the pool
+    /// @return totalReserves The total reserves
+    /// @return borrowGrowthFactor The borrow growth factor
+    /// @return lastSyncTimestamp The last recorded time that the pool was synchronized, excluding this call
+    function previewSyncState()
+        external
+        view
+        returns (
+            uint256 totalReserves,
+            UFixed256x18 borrowGrowthFactor,
+            uint256 lastSyncTimestamp
+        );
+
+    /// @notice Synchronizes the state of the pool
+    /// @return totalReserves The total reserves
+    /// @return borrowGrowthFactor The borrow growth factor
+    /// @return lastSyncTimestamp The last recorded time that the pool was synchronized, excluding this call
+    function syncState()
+        external
+        view
+        returns (
+            uint256 totalReserves,
+            UFixed256x18 borrowGrowthFactor,
+            uint256 lastSyncTimestamp
+        );
 }
