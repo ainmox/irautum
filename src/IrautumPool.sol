@@ -107,7 +107,11 @@ contract IrautumPool is IIrautumPool {
     }
 
     /// @inheritdoc IERC20
-    function approve(address spender, uint256 value) external returns (bool success) { }
+    function approve(address spender, uint256 value) external returns (bool success) {
+        approval[msg.sender][spender] = value;
+        emit Approval(msg.sender, spender, value);
+        success = true;
+    }
 
     /// @inheritdoc IERC20
     function transfer(address recipient, uint256 amount) external returns (bool success) { }
