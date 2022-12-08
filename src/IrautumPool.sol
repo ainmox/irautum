@@ -61,7 +61,7 @@ contract IrautumPool is IIrautumPool {
     function totalAssets() external view returns (uint256) {
         (
             uint256 totalBorrowed,
-            /* uint256 totalReserves */,
+            uint256 totalReserves,
             /* UFixed256x18 borrowGrowthFactor */,
             /* uint256 lastSyncTimestamp */
         ) = previewSyncState();
