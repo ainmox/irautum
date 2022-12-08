@@ -2,7 +2,7 @@ pragma solidity 0.8.17;
 
 import {IERC20} from "solidity-standard-interfaces/IERC20.sol";
 import {IERC4626} from "solidity-standard-interfaces/IERC4626.sol";
-import {FixedPointMath, UFixed256x18, UFixed80x18, UFixed16x4} from "solidity-fixed-point/FixedPointMath.sol";
+import {FixedPointMath, UFixed256x18} from "solidity-fixed-point/FixedPointMath.sol";
 
 import {IIrautumPool} from "./interfaces/IIrautumPool.sol";
 
@@ -23,19 +23,19 @@ contract IrautumPool is IIrautumPool {
     address public override admin;
 
     /// @inheritdoc IIrautumPool
-    UFixed16x4 public override reserveFactor;
+    UFixed256x18 public override reserveFactor;
 
     /// @inheritdoc IIrautumPool
-    UFixed80x18 public override minimumBorrowRate;
+    UFixed256x18 public override minimumBorrowRate;
 
     /// @inheritdoc IIrautumPool
-    UFixed80x18 public override maximumBorrowRate;
+    UFixed256x18 public override maximumBorrowRate;
 
     /// @inheritdoc IIrautumPool
-    UFixed80x18 public override optimalBorrowRate;
+    UFixed256x18 public override optimalBorrowRate;
 
     /// @inheritdoc IIrautumPool
-    UFixed16x4 public override optimalUtilization;
+    UFixed256x18 public override optimalUtilization;
 
     struct State {
         // The last recorded total borrowed assets plus interest
@@ -88,10 +88,10 @@ contract IrautumPool is IIrautumPool {
     }
 
     /// @inheritdoc IIrautumPool
-    function borrowRate() external view returns (UFixed80x18) { }
+    function borrowRate() external view returns (UFixed256x18) { }
 
     /// @inheritdoc IIrautumPool
-    function supplyRate() external view returns (UFixed80x18) { }
+    function supplyRate() external view returns (UFixed256x18) { }
 
     /// @inheritdoc IIrautumPool
     function previewSyncState()
