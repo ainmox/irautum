@@ -2,7 +2,7 @@ pragma solidity 0.8.17;
 
 import {IERC20} from "solidity-standard-interfaces/IERC20.sol";
 import {IERC4626} from "solidity-standard-interfaces/IERC4626.sol";
-import {UFixed256x18, UFixed80x18, UFixed16x4} from "solidity-fixed-point/FixedPointMath.sol";
+import {FixedPointMath, UFixed256x18, UFixed80x18, UFixed16x4} from "solidity-fixed-point/FixedPointMath.sol";
 
 import {IIrautumPool} from "./interfaces/IIrautumPool.sol";
 
@@ -70,7 +70,22 @@ contract IrautumPool is IIrautumPool {
     }
 
     /// @inheritdoc IIrautumPool
-    function utilization() external view returns (UFixed16x4) { }
+    function utilization() external view returns (UFixed256x18) {
+        (
+            uint256 totalBorrowed,
+            uint256 totalReserves,
+            /* UFixed256x18 borrowGrowthFactor */,
+            /* uint256 lastSyncTimestamp */
+        ) = previewSyncState();
+
+        uint256 totalLoaned = asset.balanceOf(address(this)) + totalBorrowed - totalReserves;
+        if (totalLoaned == 0) return UFixed256x18.wrap(0);
+
+        return FixedPointMath.unsafeDiv(
+            FixedPointMath.intoUFixed256x18(totalBorrowed),
+            UFixed256x18.wrap(totalLoaned)
+        );
+    }
 
     /// @inheritdoc IIrautumPool
     function borrowRate() external view returns (UFixed80x18) { }

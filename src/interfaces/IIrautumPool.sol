@@ -33,7 +33,7 @@ interface IIrautumPool is IERC4626 {
 
     /// @notice The proportion of lent assets that are currently being borrowed
     /// @return The utilization
-    function utilization() external view returns (UFixed16x4);
+    function utilization() external view returns (UFixed256x18);
 
     /// @notice The current per second rate that borrowers accrue interest
     /// @return The borrow rate
