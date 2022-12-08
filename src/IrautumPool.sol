@@ -68,7 +68,7 @@ contract IrautumPool is IIrautumPool {
 
     /// @inheritdoc IIrautumPool
     function previewSyncState()
-        external
+        public
         view
         returns (
             uint256 totalBorrowed,
@@ -80,7 +80,7 @@ contract IrautumPool is IIrautumPool {
 
     /// @inheritdoc IIrautumPool
     function syncState()
-        external
+        public
         view
         returns (
             uint256 totalBorrowed,
