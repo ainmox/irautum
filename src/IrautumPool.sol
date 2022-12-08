@@ -129,7 +129,23 @@ contract IrautumPool is IIrautumPool {
     }
 
     /// @inheritdoc IERC20
-    function transferFrom(address owner, address recipient, uint256 amount) external returns (bool success) { }
+    function transferFrom(address owner, address recipient, uint256 amount) external returns (bool success) {
+        uint256 spendable = allowance[owner][msg.sender];
+        require(spendable >= amount, "Insufficient allowance");
+
+        uint256 balance = balanceOf[recipient];
+        require(balance >= amount, "Insufficient balance");
+
+        unchecked {
+            allowance[owner][msg.sender] = spendable - amount;
+            balanceOf[owner] = balance - amount;
+            balanceOf[recipient] += amount;
+        }
+
+        emit Transfer(owner, recipient, amount);
+
+        success = true;
+    }
 
     /// @inheritdoc IERC4626
     function totalAssets() external view returns (uint256) { }
