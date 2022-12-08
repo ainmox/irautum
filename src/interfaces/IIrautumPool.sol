@@ -80,7 +80,6 @@ interface IIrautumPool is IERC4626 {
     /// @return lastSyncTimestamp The last recorded time that the pool was synchronized, excluding this call
     function syncState()
         external
-        view
         returns (
             uint256 totalBorrowed,
             uint256 totalReserves,

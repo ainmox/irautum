@@ -93,7 +93,6 @@ contract IrautumPool is IIrautumPool {
     /// @inheritdoc IIrautumPool
     function syncState()
         public
-        view
         returns (
             uint256 totalBorrowed,
             uint256 totalReserves,
