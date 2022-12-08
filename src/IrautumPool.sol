@@ -88,7 +88,23 @@ contract IrautumPool is IIrautumPool {
             UFixed256x18 borrowGrowthFactor,
             uint256 lastSyncTimestamp
         )
-    { }
+    {
+        (
+            totalBorrowed,
+            totalReserves,
+            borrowGrowthFactor,
+            lastSyncTimestamp
+        ) = previewSyncState();
+
+        if (lastSyncTimestamp < timestamp()) {
+            state = State({
+                lastTotalBorrowed: totalBorrowed,
+                lastTotalReserves: totalReserves,
+                lastBorrowGrowthFactor: borrowGrowthFactor,
+                lastSyncTimestamp: lastSyncTimestamp
+            });
+        }
+    }
 
     /// @inheritdoc IERC20
     function approve(address spender, uint256 value) external returns (bool success) { }
