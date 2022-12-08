@@ -6,7 +6,7 @@ import {UFixed80x18, UFixed16x4} from "solidity-fixed-point/FixedPointMath.sol";
 
 /// @title Interface for an Irautum asset pool
 /// @custom:coauthor Ainmox (https://github.com/ainmox)
-interface IIrautumAssetPool is IERC4626 {
+interface IIrautumPool is IERC4626 {
     /// @notice The administrator of the pool
     /// @return The admin
     function admin() external view returns (address);
