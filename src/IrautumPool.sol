@@ -57,6 +57,18 @@ contract IrautumPool is IIrautumPool {
         return block.timestamp;
     }
 
+    /// @inheritdoc IERC4626
+    function totalAssets() external view returns (uint256) {
+        (
+            uint256 totalBorrowed,
+            /* uint256 totalReserves */,
+            /* UFixed256x18 borrowGrowthFactor */,
+            /* uint256 lastSyncTimestamp */
+        ) = previewSyncState();
+
+        return asset.balanceOf(address(this)) + totalBorrowed - totalReserves;
+    }
+
     /// @inheritdoc IIrautumPool
     function utilization() external view returns (UFixed16x4) { }
 
@@ -146,9 +158,6 @@ contract IrautumPool is IIrautumPool {
 
         success = true;
     }
-
-    /// @inheritdoc IERC4626
-    function totalAssets() external view returns (uint256) { }
 
     /// @inheritdoc IERC4626
     function convertToShares(uint256 assets) external view returns (uint256 shares) { }
