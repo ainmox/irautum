@@ -165,6 +165,10 @@ contract IrautumPool is IIrautumPool {
         uint256 balance = balanceOf[recipient];
         require(balance >= amount, "Insufficient balance");
 
+        // Unchecked arithmetic is safe here because:
+        // 1). It is asserted that spendable >= amount
+        // 2). It is asserted that balance >= amount
+        // 3). It is asserted that the sum of all the balances is less than 2^256-1
         unchecked {
             allowance[owner][msg.sender] = spendable - amount;
             balanceOf[owner] = balance - amount;
