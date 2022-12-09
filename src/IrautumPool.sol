@@ -100,11 +100,11 @@ contract IrautumPool is IIrautumPool {
         ) = previewSyncState();
 
         uint256 totalLoaned = asset.balanceOf(address(this)) + totalBorrowed - totalReserves;
-        if (totalLoaned == 0) return UFixed256x18.wrap(0);
 
+        // Unsafe division is safe here since the result will return zero when dividing by zero
         return FixedPointMath.unsafeDiv(
             FixedPointMath.intoUFixed256x18(totalBorrowed),
-            UFixed256x18.wrap(totalLoaned)
+            totalLoaned
         );
     }
 
