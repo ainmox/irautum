@@ -15,6 +15,10 @@ interface IIrautumPool is IERC4626 {
     /// @return The reserve factor
     function reserveFactor() external view returns (UFixed256x18);
 
+    /// @notice The utilization that the pool is attempting to maintain
+    /// @return The optimal utilization
+    function optimalUtilizationRate() external view returns (UFixed256x18);
+
     /// @notice The borrow rate when the utilization is at its minimum value
     /// @return The minimum borrow rate
     function minimumBorrowRate() external view returns (UFixed256x18);
@@ -27,17 +31,21 @@ interface IIrautumPool is IERC4626 {
     /// @return The optimal borrow rate
     function optimalBorrowRate() external view returns (UFixed256x18);
 
-    /// @notice The utilization that the pool is attempting to maintain
-    /// @return The optimal utilization
-    function optimalUtilization() external view returns (UFixed256x18);
+    /// @notice The slope of the borrow rate when the utilization is below the optimal value
+    /// @return The slope of the lower borrow rate
+    function slopeLowerBorrowRate() external view returns (UFixed256x18);
+
+    /// @notice The slope of the borrow rate when the utilization is above the optimal value
+    /// @return The slope of the upper borrow rate
+    function slopeUpperBorrowRate() external view returns (UFixed256x18);
 
     /// @notice The proportion of lent assets that are currently being borrowed
     /// @return The utilization
-    function utilization() external view returns (UFixed256x18);
+    function utilizationRate() external view returns (UFixed256x18);
 
     /// @notice The current per second rate that borrowers accrue interest
-    /// @return The borrow rate
-    function borrowRate() external view returns (UFixed256x18);
+    /// @return rate The borrow rate
+    function borrowRate() external view returns (UFixed256x18 rate);
 
     /// @notice The current per second rate that lenders accrue interest
     /// @return The supply rate
