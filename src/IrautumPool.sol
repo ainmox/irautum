@@ -43,6 +43,21 @@ contract IrautumPool is IIrautumPool {
     /// @inheritdoc IIrautumPool
     UFixed256x18 public override slopeUpperBorrowRate;
 
+    /// @inheritdoc IIrautumPool
+    UFixed256x18 public override minimumSupplyRate;
+
+    /// @inheritdoc IIrautumPool
+    UFixed256x18 public override maximumSupplyRate;
+
+    /// @inheritdoc IIrautumPool
+    UFixed256x18 public override optimalSupplyRate;
+
+    /// @inheritdoc IIrautumPool
+    UFixed256x18 public override slopeLowerSupplyRate;
+
+    /// @inheritdoc IIrautumPool
+    UFixed256x18 public override slopeUpperSupplyRate;
+
     struct State {
         // The last recorded total borrowed assets plus interest
         uint256 lastTotalBorrowed;
@@ -105,7 +120,15 @@ contract IrautumPool is IIrautumPool {
     }
 
     /// @inheritdoc IIrautumPool
-    function supplyRate() external view returns (UFixed256x18 rate) { }
+    function supplyRate() external view returns (UFixed256x18 rate) {
+        UFixed256x18 utilization = utilizationRate();
+
+        if (utilization.cmp(optimalUtilizationRate) <= 0) {
+            rate = minimumSupplyRate.add(slopeLowerSupplyRate.mul(utilization));
+        } else {
+            rate = optimalSupplyRate.add(slopeUpperSupplyRate.mul(utilization.unsafeSub(optimalUtilizationRate)));
+        }
+    }
 
     /// @inheritdoc IIrautumPool
     function previewSyncState()

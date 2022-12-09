@@ -39,6 +39,26 @@ interface IIrautumPool is IERC4626 {
     /// @return The slope of the upper borrow rate
     function slopeUpperBorrowRate() external view returns (UFixed256x18);
 
+    /// @notice The supply rate when the utilization is at its minimum value
+    /// @return The minimum borrow rate
+    function minimumSupplyRate() external view returns (UFixed256x18);
+
+    /// @notice The supply rate when the utilization is at its maximum value
+    /// @return The maximum supply rate
+    function maximumSupplyRate() external view returns (UFixed256x18);
+
+    /// @notice The supply rate when the utilization is at its optimal value
+    /// @return The optimal supply rate
+    function optimalSupplyRate() external view returns (UFixed256x18);
+
+    /// @notice The slope of the supply rate when the utilization is below the optimal value
+    /// @return The slope of the lower supply rate
+    function slopeLowerSupplyRate() external view returns (UFixed256x18);
+
+    /// @notice The slope of the supply rate when the utilization is above the optimal value
+    /// @return The slope of the upper supply rate
+    function slopeUpperSupplyRate() external view returns (UFixed256x18);
+
     /// @notice The proportion of lent assets that are currently being borrowed
     /// @return The utilization
     function utilizationRate() external view returns (UFixed256x18);
@@ -48,8 +68,8 @@ interface IIrautumPool is IERC4626 {
     function borrowRate() external view returns (UFixed256x18 rate);
 
     /// @notice The current per second rate that lenders accrue interest
-    /// @return The supply rate
-    function supplyRate() external view returns (UFixed256x18);
+    /// @return rate The supply rate
+    function supplyRate() external view returns (UFixed256x18 rate);
 
     /// @notice The last recorded state of the pool
     /// @return lastTotalBorrowed The last recorded total borrowed assets plus interest
