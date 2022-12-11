@@ -11,6 +11,10 @@ interface IIrautumPool is IERC4626 {
     /// @return The admin
     function admin() external view returns (address);
 
+    /// @notice The maximum amount of assets that can be deposited into the pool
+    /// @return The deposit limit
+    function depositLimit() external view returns (uint256);
+
     /// @notice The proportion of the accrued interest that is retained for reserves
     /// @return The reserve factor
     function reserveFactor() external view returns (UFixed256x18);

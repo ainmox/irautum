@@ -15,6 +15,9 @@ contract IrautumPool is IIrautumPool {
     address public immutable override admin;
 
     /// @inheritdoc IIrautumPool
+    uint256 public immutable depositLimit;
+
+    /// @inheritdoc IIrautumPool
     UFixed256x18 public immutable override reserveFactor;
 
     /// @inheritdoc IIrautumPool
@@ -80,6 +83,7 @@ contract IrautumPool is IIrautumPool {
 
         asset                  = params.asset;
         admin                  = params.admin;
+        depositLimit           = params.depositLimit;
         reserveFactor          = params.reserveFactor;
         optimalUtilizationRate = params.optimalUtilizationRate;
         minimumBorrowRate      = params.minimumBorrowRate;
