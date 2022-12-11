@@ -64,8 +64,8 @@ interface IIrautumPool is IERC4626 {
     function slopeUpperSupplyRate() external view returns (UFixed256x18);
 
     /// @notice The proportion of lent assets that are currently being borrowed
-    /// @return The utilization
-    function utilizationRate() external view returns (UFixed256x18);
+    /// @return rate The utilization rate
+    function utilizationRate() external view returns (UFixed256x18 rate);
 
     /// @notice The current per second rate that borrowers accrue interest
     /// @return rate The borrow rate

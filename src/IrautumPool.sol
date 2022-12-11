@@ -117,7 +117,7 @@ contract IrautumPool is IIrautumPool {
     }
 
     /// @inheritdoc IIrautumPool
-    function utilizationRate() public view returns (UFixed256x18) {
+    function utilizationRate() public view returns (UFixed256x18 rate) {
         (
             uint256 totalBorrowed,
             uint256 totalReserves,
@@ -128,10 +128,7 @@ contract IrautumPool is IIrautumPool {
         uint256 totalLoaned = asset.balanceOf(address(this)) + totalBorrowed - totalReserves;
 
         // Unsafe division is safe here since the result will return zero when dividing by zero
-        return FixedPointMath.unsafeDiv(
-            FixedPointMath.intoUFixed256x18(totalBorrowed),
-            totalLoaned
-        );
+        rate = FixedPointMath.unsafeDiv(FixedPointMath.intoUFixed256x18(totalBorrowed), totalLoaned);
     }
 
     /// @inheritdoc IIrautumPool
