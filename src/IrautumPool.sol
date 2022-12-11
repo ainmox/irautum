@@ -12,9 +12,6 @@ contract IrautumPool is IIrautumPool {
     IERC20 public immutable override asset;
 
     /// @inheritdoc IIrautumPool
-    address public immutable override admin;
-
-    /// @inheritdoc IIrautumPool
     uint256 public immutable depositLimit;
 
     /// @inheritdoc IIrautumPool
@@ -82,7 +79,6 @@ contract IrautumPool is IIrautumPool {
         IIrautumPoolDeployer.DeploymentParameters memory params = deployer.deploymentParameters();
 
         asset                  = params.asset;
-        admin                  = params.admin;
         depositLimit           = params.depositLimit;
         reserveFactor          = params.reserveFactor;
         optimalUtilizationRate = params.optimalUtilizationRate;

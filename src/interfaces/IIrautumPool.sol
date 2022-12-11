@@ -7,10 +7,6 @@ import {UFixed256x18} from "solidity-fixed-point/FixedPointMath.sol";
 /// @title Interface for an Irautum asset pool
 /// @custom:coauthor Ainmox (https://github.com/ainmox)
 interface IIrautumPool is IERC4626 {
-    /// @notice The administrator of the pool
-    /// @return The admin
-    function admin() external view returns (address);
-
     /// @notice The maximum amount of assets that can be deposited into the pool
     /// @return The deposit limit
     function depositLimit() external view returns (uint256);

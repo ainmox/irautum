@@ -9,7 +9,6 @@ import {UFixed256x18} from "solidity-fixed-point/FixedPointMath.sol";
 interface IIrautumPoolDeployer {
     struct DeploymentParameters {
         IERC20 asset;
-        address admin;
         uint256 depositLimit;
         UFixed256x18 reserveFactor;
         UFixed256x18 optimalUtilizationRate;
