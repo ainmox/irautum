@@ -5,6 +5,7 @@ import {IERC4626} from "solidity-standard-interfaces/IERC4626.sol";
 import {FixedPointMath, UFixed256x18} from "solidity-fixed-point/FixedPointMath.sol";
 
 import {IIrautumPool} from "./interfaces/IIrautumPool.sol";
+import {IIrautumPoolDeployer} from "./interfaces/IIrautumPoolDeployer.sol";
 
 contract IrautumPool is IIrautumPool {
     /// @inheritdoc IERC20
@@ -17,46 +18,46 @@ contract IrautumPool is IIrautumPool {
     mapping(address => mapping(address => uint256)) public override allowance;
 
     /// @inheritdoc IERC4626
-    IERC20 public override asset;
+    IERC20 public immutable override asset;
 
     /// @inheritdoc IIrautumPool
-    address public override admin;
+    address public immutable override admin;
 
     /// @inheritdoc IIrautumPool
-    UFixed256x18 public override reserveFactor;
+    UFixed256x18 public immutable override reserveFactor;
 
     /// @inheritdoc IIrautumPool
-    UFixed256x18 public override optimalUtilizationRate;
+    UFixed256x18 public immutable override optimalUtilizationRate;
 
     /// @inheritdoc IIrautumPool
-    UFixed256x18 public override minimumBorrowRate;
+    UFixed256x18 public immutable override minimumBorrowRate;
 
     /// @inheritdoc IIrautumPool
-    UFixed256x18 public override maximumBorrowRate;
+    UFixed256x18 public immutable override maximumBorrowRate;
 
     /// @inheritdoc IIrautumPool
-    UFixed256x18 public override optimalBorrowRate;
+    UFixed256x18 public immutable override optimalBorrowRate;
 
     /// @inheritdoc IIrautumPool
-    UFixed256x18 public override slopeLowerBorrowRate;
+    UFixed256x18 public immutable override slopeLowerBorrowRate;
 
     /// @inheritdoc IIrautumPool
-    UFixed256x18 public override slopeUpperBorrowRate;
+    UFixed256x18 public immutable override slopeUpperBorrowRate;
 
     /// @inheritdoc IIrautumPool
-    UFixed256x18 public override minimumSupplyRate;
+    UFixed256x18 public immutable override minimumSupplyRate;
 
     /// @inheritdoc IIrautumPool
-    UFixed256x18 public override maximumSupplyRate;
+    UFixed256x18 public immutable override maximumSupplyRate;
 
     /// @inheritdoc IIrautumPool
-    UFixed256x18 public override optimalSupplyRate;
+    UFixed256x18 public immutable override optimalSupplyRate;
 
     /// @inheritdoc IIrautumPool
-    UFixed256x18 public override slopeLowerSupplyRate;
+    UFixed256x18 public immutable override slopeLowerSupplyRate;
 
     /// @inheritdoc IIrautumPool
-    UFixed256x18 public override slopeUpperSupplyRate;
+    UFixed256x18 public immutable override slopeUpperSupplyRate;
 
     struct State {
         // The last recorded total borrowed assets plus interest
@@ -71,6 +72,27 @@ contract IrautumPool is IIrautumPool {
 
     /// @inheritdoc IIrautumPool
     State public override state;
+
+    constructor() {
+        IIrautumPoolDeployer deployer = IIrautumPoolDeployer(msg.sender);
+
+        IIrautumPoolDeployer.DeploymentParameters memory params = deployer.deploymentParameters();
+
+        asset                  = params.asset;
+        admin                  = params.admin;
+        reserveFactor          = params.reserveFactor;
+        optimalUtilizationRate = params.optimalUtilizationRate;
+        minimumBorrowRate      = params.minimumBorrowRate;
+        maximumBorrowRate      = params.maximumBorrowRate;
+        optimalBorrowRate      = params.optimalBorrowRate;
+        slopeLowerBorrowRate   = params.slopeLowerBorrowRate;
+        slopeUpperBorrowRate   = params.slopeUpperBorrowRate;
+        minimumSupplyRate      = params.minimumSupplyRate;
+        maximumSupplyRate      = params.maximumSupplyRate;
+        optimalSupplyRate      = params.optimalSupplyRate;
+        slopeLowerSupplyRate   = params.slopeLowerSupplyRate;
+        slopeUpperSupplyRate   = params.slopeUpperSupplyRate;
+    }
 
     /// @notice Gets the current block timestamp
     /// @return The current block timestamp
