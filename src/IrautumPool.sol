@@ -8,15 +8,6 @@ import {IIrautumPool} from "./interfaces/IIrautumPool.sol";
 import {IIrautumPoolDeployer} from "./interfaces/IIrautumPoolDeployer.sol";
 
 contract IrautumPool is IIrautumPool {
-    /// @inheritdoc IERC20
-    uint256 public override totalSupply;
-
-    /// @inheritdoc IERC20
-    mapping(address => uint256) public override balanceOf;
-
-    /// @inheritdoc IERC20
-    mapping(address => mapping(address => uint256)) public override allowance;
-
     /// @inheritdoc IERC4626
     IERC20 public immutable override asset;
 
@@ -58,6 +49,15 @@ contract IrautumPool is IIrautumPool {
 
     /// @inheritdoc IIrautumPool
     UFixed256x18 public immutable override slopeUpperSupplyRate;
+
+    /// @inheritdoc IERC20
+    uint256 public override totalSupply;
+
+    /// @inheritdoc IERC20
+    mapping(address => uint256) public override balanceOf;
+
+    /// @inheritdoc IERC20
+    mapping(address => mapping(address => uint256)) public override allowance;
 
     struct State {
         // The last recorded total borrowed assets plus interest
