@@ -105,7 +105,7 @@ contract IrautumPool is IIrautumPool {
     }
 
     /// @inheritdoc IERC4626
-    function totalAssets() external view returns (uint256) {
+    function totalAssets() public view returns (uint256) {
         (
             uint256 totalBorrowed,
             uint256 totalReserves,
