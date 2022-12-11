@@ -246,7 +246,9 @@ contract IrautumPool is IIrautumPool {
     }
 
     /// @inheritdoc IERC4626
-    function convertToAssets(uint256 shares) external view returns (uint256 assets) { }
+    function convertToAssets(uint256 shares) external view returns (uint256 assets) {
+        assets = totalSupply > 0 ? shares * totalAssets() / totalSupply : shares;
+    }
 
     /// @inheritdoc IERC4626
     function maxDeposit(address) external view returns (uint256 maxAssets) {
