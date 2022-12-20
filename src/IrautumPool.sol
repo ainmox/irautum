@@ -323,6 +323,13 @@ contract IrautumPool is IIrautumPool {
 
     /// @inheritdoc IERC4626
     function maxWithdraw(address owner) public view returns (uint256 maxAssets) {
+        // As per the ERC4626 specification this function "MUST return the maximum amount of assets that could be
+        // transferred from owner through withdraw and not cause a revert, which MUST NOT be higher than the actual
+        // maximum that would be accepted (it should underestimate if necessary)." To prevent withdraw from reverting
+        // we must ensure that the amount of assets that would be withdrawn is less than or equal to the amount of
+        // assets which are available to be withdrawn. As such, we limit the maximum amount of assets that can be
+        // withdrawn to the amount of assets that the contract currently has in its custody minus the assets which
+        // are earmarked for reserves.
         maxAssets = min(availableAssets(), convertToAssets(balanceOf[owner]));
     }
 
