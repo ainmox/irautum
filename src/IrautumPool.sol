@@ -355,6 +355,13 @@ contract IrautumPool is IIrautumPool {
 
     /// @inheritdoc IERC4626
     function maxRedeem(address owner) public view returns (uint256 maxShares) {
+        // As per the ERC4626 specification this function "MUST return the maximum amount of shares that could be
+        // transferred from owner through redeem and not cause a revert, which MUST NOT be higher than the actual
+        // maximum that would be accepted (it should underestimate if necessary)." To prevent redemptions from
+        // reverting we must ensure that the value of the shares being redeemed is less than or equal to the amount of
+        // assets which are available to be withdrawn. As such, we limit the maximum amount of shares that can be
+        // redeemed to equivalent value of assets that the contract currently has in its custody minus the assets
+        // which are earmarked for reserves.
         maxShares = min(balanceOf[owner], convertToShares(availableAssets()));
     }
 
