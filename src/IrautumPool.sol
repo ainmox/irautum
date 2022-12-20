@@ -3,9 +3,12 @@ pragma solidity 0.8.17;
 import {IERC20} from "solidity-standard-interfaces/IERC20.sol";
 import {IERC4626} from "solidity-standard-interfaces/IERC4626.sol";
 import {FixedPointMath, UFixed256x18} from "solidity-fixed-point/FixedPointMath.sol";
+import {SafeERC20} from "solidity-erc20/SafeERC20.sol";
 
 import {IIrautumPool} from "./interfaces/IIrautumPool.sol";
 import {IIrautumPoolDeployer} from "./interfaces/IIrautumPoolDeployer.sol";
+
+using SafeERC20 for IERC20;
 
 contract IrautumPool is IIrautumPool {
     /// @inheritdoc IERC4626
@@ -261,7 +264,18 @@ contract IrautumPool is IIrautumPool {
     }
 
     /// @inheritdoc IERC4626
-    function deposit(uint256 assets, address receiver) external returns (uint256 shares) { }
+    function deposit(uint256 assets, address receiver) external returns (uint256 shares) {
+        require(assets <= maxDeposit(msg.sender));
+        shares = previewDeposit(assets);
+
+        totalSupply += shares;
+        unchecked {
+            balanceOf[receiver] += shares;
+        }
+        emit Transfer(address(0), receiver, shares);
+
+        asset.safeTransferFrom(msg.sender, address(this), assets);
+    }
 
     /// @inheritdoc IERC4626
     function maxMint(address receiver) public view returns (uint256 maxShares) { }
