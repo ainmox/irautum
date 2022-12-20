@@ -330,7 +330,7 @@ contract IrautumPool is IIrautumPool {
         // assets which are available to be withdrawn. As such, we limit the maximum amount of assets that can be
         // withdrawn to the amount of assets that the contract currently has in its custody minus the assets which
         // are earmarked for reserves.
-        maxAssets = min(availableAssets(), convertToAssets(balanceOf[owner]));
+        maxAssets = min(convertToAssets(balanceOf[owner]), availableAssets());
     }
 
     /// @inheritdoc IERC4626
