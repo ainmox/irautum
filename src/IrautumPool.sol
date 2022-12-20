@@ -314,14 +314,12 @@ contract IrautumPool is IIrautumPool {
     /// @inheritdoc IERC4626
     function withdraw(uint256 assets, address receiver, address owner) public returns (uint256 shares) {
         require(assets <= maxWithdraw(owner));
-        require(owner == msg.sender || assets <= allowance[owner][msg.sender]);
-
-        shares = previewWithdraw(assets);
+        require(owner == msg.sender || (shares = previewWithdraw(assets)) <= allowance[owner][msg.sender]);
 
         totalSupply -= shares;
         unchecked {
             balanceOf[owner] -= shares;
-            allowance[owner][msg.sender] -= assets;
+            allowance[owner][msg.sender] -= shares;
         }
         emit Transfer(owner, address(0), shares);
 
