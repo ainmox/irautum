@@ -10,6 +10,14 @@ import {IIrautumPoolDeployer} from "./interfaces/IIrautumPoolDeployer.sol";
 
 using SafeERC20 for IERC20;
 
+/// @dev Gets the minimum of two unsigned 256 bit integers
+/// @param x The first 256 bit integer
+/// @param y The second 256 bit integer
+/// @return result The minimum of the two 256 bit integers
+function min(uint256 x, uint256 y) pure returns (uint256 result) {
+    result = x < y ? x : y;
+}
+
 contract IrautumPool is IIrautumPool {
     /// @inheritdoc IERC4626
     IERC20 public immutable override asset;
@@ -113,6 +121,18 @@ contract IrautumPool is IIrautumPool {
         ) = previewSyncState();
 
         return asset.balanceOf(address(this)) + totalBorrowed - totalReserves;
+    }
+
+    /// @inheritdoc IIrautumPool
+    function availableAssets() public view returns (uint256) {
+        (
+            /* uint256 totalBorrowed */,
+            uint256 totalReserves,
+            /* UFixed256x18 borrowGrowthFactor */,
+            /* uint256 lastSyncTimestamp */
+        ) = previewSyncState();
+
+        return asset.balanceOf(address(this)) - totalReserves;
     }
 
     /// @inheritdoc IIrautumPool
@@ -303,7 +323,7 @@ contract IrautumPool is IIrautumPool {
 
     /// @inheritdoc IERC4626
     function maxWithdraw(address owner) public view returns (uint256 maxAssets) {
-        maxAssets = convertToAssets(balanceOf[owner] /* shares */);
+        maxAssets = min(availableAssets(), convertToAssets(balanceOf[owner]));
     }
 
     /// @inheritdoc IERC4626
