@@ -339,5 +339,19 @@ contract IrautumPool is IIrautumPool {
     }
 
     /// @inheritdoc IERC4626
-    function redeem(uint256 shares, address receiver, address owner) public returns (uint256 assets) { }
+    function redeem(uint256 shares, address receiver, address owner) public returns (uint256 assets) {
+        require(shares <= maxRedeem(owner));
+        require(owner == msg.sender || shares <= allowance[owner][msg.sender]);
+
+        assets = previewRedeem(shares);
+
+        totalSupply -= shares;
+        unchecked {
+            balanceOf[owner] -= shares;
+            allowance[owner][msg.sender] -= shares;
+        }
+        emit Transfer(owner, address(0), shares);
+
+        asset.safeTransfer(receiver, assets);
+    }
 }
