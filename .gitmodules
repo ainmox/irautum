@@ -10,3 +10,6 @@
 [submodule "lib/solidity-erc20"]
 	path = lib/solidity-erc20
 	url = https://github.com/ainmox/solidity-erc20
+[submodule "lib/solidity-commons"]
+	path = lib/solidity-commons
+	url = https://github.com/ainmox/solidity-commons
