@@ -256,7 +256,9 @@ contract IrautumPool is IIrautumPool {
     }
 
     /// @inheritdoc IERC4626
-    function previewDeposit(uint256 assets) external view returns (uint256 shares) { }
+    function previewDeposit(uint256 assets) external view returns (uint256 shares) {
+        shares = convertToShares(assets);
+    }
 
     /// @inheritdoc IERC4626
     function deposit(uint256 assets, address receiver) external view returns (uint256 shares) { }
