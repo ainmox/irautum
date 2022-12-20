@@ -237,17 +237,17 @@ contract IrautumPool is IIrautumPool {
     }
 
     /// @inheritdoc IERC4626
-    function convertToShares(uint256 assets) external view returns (uint256 shares) {
+    function convertToShares(uint256 assets) public view returns (uint256 shares) {
         shares = totalSupply > 0 ? assets * totalSupply / totalAssets() : assets;
     }
 
     /// @inheritdoc IERC4626
-    function convertToAssets(uint256 shares) external view returns (uint256 assets) {
+    function convertToAssets(uint256 shares) public view returns (uint256 assets) {
         assets = totalSupply > 0 ? shares * totalAssets() / totalSupply : shares;
     }
 
     /// @inheritdoc IERC4626
-    function maxDeposit(address) external view returns (uint256 maxAssets) {
+    function maxDeposit(address) public view returns (uint256 maxAssets) {
         uint256 loanedAssets = totalAssets();
 
         unchecked {
@@ -256,37 +256,37 @@ contract IrautumPool is IIrautumPool {
     }
 
     /// @inheritdoc IERC4626
-    function previewDeposit(uint256 assets) external view returns (uint256 shares) {
+    function previewDeposit(uint256 assets) public view returns (uint256 shares) {
         shares = convertToShares(assets);
     }
 
     /// @inheritdoc IERC4626
-    function deposit(uint256 assets, address receiver) external view returns (uint256 shares) { }
+    function deposit(uint256 assets, address receiver) external returns (uint256 shares) { }
 
     /// @inheritdoc IERC4626
-    function maxMint(address receiver) external view returns (uint256 maxShares) { }
+    function maxMint(address receiver) public view returns (uint256 maxShares) { }
 
     /// @inheritdoc IERC4626
-    function previewMint(uint256 shares) external view returns (uint256 assets) { }
+    function previewMint(uint256 shares) public view returns (uint256 assets) { }
 
     /// @inheritdoc IERC4626
-    function mint(uint256 shares, address receiver) external view returns (uint256 assets) { }
+    function mint(uint256 shares, address receiver) public returns (uint256 assets) { }
 
     /// @inheritdoc IERC4626
-    function maxWithdraw(address owner) external view returns (uint256 maxAssets) { }
+    function maxWithdraw(address owner) public view returns (uint256 maxAssets) { }
 
     /// @inheritdoc IERC4626
-    function previewWithdraw(uint256 assets) external view returns (uint256 shares) { }
+    function previewWithdraw(uint256 assets) public view returns (uint256 shares) { }
 
     /// @inheritdoc IERC4626
-    function withdraw(uint256 assets, address receiver, address owner) external view returns (uint256 shares) { }
+    function withdraw(uint256 assets, address receiver, address owner) public returns (uint256 shares) { }
 
     /// @inheritdoc IERC4626
-    function maxRedeem(address owner) external view returns (uint256 maxShares) { }
+    function maxRedeem(address owner) public view returns (uint256 maxShares) { }
 
     /// @inheritdoc IERC4626
-    function previewRedeem(uint256 shares) external view returns (uint256 assets) { }
+    function previewRedeem(uint256 shares) public view returns (uint256 assets) { }
 
     /// @inheritdoc IERC4626
-    function redeem(uint256 shares, address receiver, address owner) external view returns (uint256 assets) { }
+    function redeem(uint256 shares, address receiver, address owner) public returns (uint256 assets) { }
 }
