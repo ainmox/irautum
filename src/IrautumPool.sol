@@ -132,7 +132,11 @@ contract IrautumPool is IIrautumPool {
             /* uint256 lastSyncTimestamp */
         ) = previewSyncState();
 
-        return asset.balanceOf(address(this)) - totalReserves;
+        uint256 balance = asset.balanceOf(address(this));
+
+        unchecked {
+            return balance > totalReserves ? balance - totalReserves : 0;
+        }
     }
 
     /// @inheritdoc IIrautumPool
