@@ -346,8 +346,8 @@ contract IrautumPool is IIrautumPool {
 
         totalSupply -= shares;
         unchecked {
+            if (msg.sender != owner) allowance[owner][msg.sender] -= shares;
             balanceOf[owner] -= shares;
-            allowance[owner][msg.sender] -= shares;
         }
         emit Transfer(owner, address(0), shares);
 
@@ -382,8 +382,8 @@ contract IrautumPool is IIrautumPool {
 
         totalSupply -= shares;
         unchecked {
+            if (msg.sender != owner) allowance[owner][msg.sender] -= shares;
             balanceOf[owner] -= shares;
-            allowance[owner][msg.sender] -= shares;
         }
         emit Transfer(owner, address(0), shares);
 
