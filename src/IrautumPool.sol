@@ -298,6 +298,8 @@ contract IrautumPool is IIrautumPool {
         }
         emit Transfer(address(0), receiver, shares);
 
+        emit Deposit(msg.sender, receiver, assets, shares);
+
         asset.safeTransferFrom(msg.sender, address(this), assets);
     }
 
@@ -321,6 +323,8 @@ contract IrautumPool is IIrautumPool {
             balanceOf[receiver] += shares;
         }
         emit Transfer(address(0), receiver, shares);
+
+        emit Deposit(msg.sender, receiver, assets, shares);
 
         asset.safeTransferFrom(msg.sender, address(this), assets);
     }
@@ -353,6 +357,8 @@ contract IrautumPool is IIrautumPool {
             allowance[owner][msg.sender] -= shares;
         }
         emit Transfer(owner, address(0), shares);
+
+        emit Withdraw(msg.sender, receiver, owner, assets, shares);
 
         asset.safeTransfer(receiver, assets);
     }
@@ -387,6 +393,8 @@ contract IrautumPool is IIrautumPool {
             allowance[owner][msg.sender] -= shares;
         }
         emit Transfer(owner, address(0), shares);
+
+        emit Withdraw(msg.sender, receiver, owner, assets, shares);
 
         asset.safeTransfer(receiver, assets);
     }
