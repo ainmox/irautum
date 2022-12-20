@@ -1,5 +1,6 @@
 pragma solidity 0.8.17;
 
+import {Math} from "solidity-commons/Math.sol";
 import {IERC20} from "solidity-standard-interfaces/IERC20.sol";
 import {IERC4626} from "solidity-standard-interfaces/IERC4626.sol";
 import {FixedPointMath, UFixed256x18} from "solidity-fixed-point/FixedPointMath.sol";
@@ -9,14 +10,6 @@ import {IIrautumPool} from "./interfaces/IIrautumPool.sol";
 import {IIrautumPoolDeployer} from "./interfaces/IIrautumPoolDeployer.sol";
 
 using SafeERC20 for IERC20;
-
-/// @dev Gets the minimum of two unsigned 256 bit integers
-/// @param x The first 256 bit integer
-/// @param y The second 256 bit integer
-/// @return result The minimum of the two 256 bit integers
-function min(uint256 x, uint256 y) pure returns (uint256 result) {
-    result = x < y ? x : y;
-}
 
 contract IrautumPool is IIrautumPool {
     /// @inheritdoc IERC4626
@@ -331,7 +324,7 @@ contract IrautumPool is IIrautumPool {
         // assets which are available to be withdrawn. As such, we limit the maximum amount of assets that can be
         // withdrawn to the amount of assets that the contract currently has in its custody minus the assets which
         // are earmarked for reserves.
-        maxAssets = min(convertToAssets(balanceOf[owner]), availableAssets());
+        maxAssets = Math.min(convertToAssets(balanceOf[owner]), availableAssets());
     }
 
     /// @inheritdoc IERC4626
@@ -365,7 +358,7 @@ contract IrautumPool is IIrautumPool {
         // assets which are available to be withdrawn. As such, we limit the maximum amount of shares that can be
         // redeemed to equivalent value of assets that the contract currently has in its custody minus the assets
         // which are earmarked for reserves.
-        maxShares = min(balanceOf[owner], convertToShares(availableAssets()));
+        maxShares = Math.min(balanceOf[owner], convertToShares(availableAssets()));
     }
 
     /// @inheritdoc IERC4626
