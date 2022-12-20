@@ -348,7 +348,7 @@ contract IrautumPool is IIrautumPool {
 
     /// @inheritdoc IERC4626
     function maxRedeem(address owner) public view returns (uint256 maxShares) {
-        maxShares = balanceOf[owner];
+        maxShares = min(convertToShares(availableAssets()), balanceOf[owner]);
     }
 
     /// @inheritdoc IERC4626
