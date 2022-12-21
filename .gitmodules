@@ -13,3 +13,6 @@
 [submodule "lib/solidity-commons"]
 	path = lib/solidity-commons
 	url = https://github.com/ainmox/solidity-commons
+[submodule "lib/erc4626-tests"]
+	path = lib/erc4626-tests
+	url = https://github.com/a16z/erc4626-tests
