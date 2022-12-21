@@ -19,9 +19,6 @@ contract IrautumPool is IIrautumPool {
     uint256 public immutable depositLimit;
 
     /// @inheritdoc IIrautumPool
-    UFixed256x18 public immutable override reserveFactor;
-
-    /// @inheritdoc IIrautumPool
     UFixed256x18 public immutable override optimalUtilizationRate;
 
     /// @inheritdoc IIrautumPool
@@ -64,10 +61,10 @@ contract IrautumPool is IIrautumPool {
     mapping(address => mapping(address => uint256)) public override allowance;
 
     struct State {
-        // The last recorded total borrowed assets plus interest
+        // The last recorded total assets supplied plus interest earned
+        uint256 lastTotalSupplied;
+        // The last recorded total borrowed assets plus interest charged
         uint256 lastTotalBorrowed;
-        // The last recorded total reserves
-        uint256 lastTotalReserves;
         // The last recorded borrow growth factor
         UFixed256x18 lastBorrowGrowthFactor;
         //  The last recorded time that the pool was synchronized
@@ -84,7 +81,6 @@ contract IrautumPool is IIrautumPool {
 
         asset                  = params.asset;
         depositLimit           = params.depositLimit;
-        reserveFactor          = params.reserveFactor;
         optimalUtilizationRate = params.optimalUtilizationRate;
         minimumBorrowRate      = params.minimumBorrowRate;
         maximumBorrowRate      = params.maximumBorrowRate;
@@ -105,46 +101,26 @@ contract IrautumPool is IIrautumPool {
     }
 
     /// @inheritdoc IERC4626
-    function totalAssets() public view returns (uint256) {
+    function totalAssets() public view returns (uint256 totalSupplied) {
         (
-            uint256 totalBorrowed,
-            uint256 totalReserves,
-            /* UFixed256x18 borrowGrowthFactor */,
-            /* uint256 lastSyncTimestamp */
-        ) = previewSyncState();
-
-        return asset.balanceOf(address(this)) + totalBorrowed - totalReserves;
-    }
-
-    /// @inheritdoc IIrautumPool
-    function availableAssets() public view returns (uint256) {
-        (
+            totalSupplied,
             /* uint256 totalBorrowed */,
-            uint256 totalReserves,
             /* UFixed256x18 borrowGrowthFactor */,
             /* uint256 lastSyncTimestamp */
         ) = previewSyncState();
-
-        uint256 balance = asset.balanceOf(address(this));
-
-        unchecked {
-            return balance > totalReserves ? balance - totalReserves : 0;
-        }
     }
 
     /// @inheritdoc IIrautumPool
     function utilizationRate() public view returns (UFixed256x18 rate) {
         (
+            uint256 totalSupplied,
             uint256 totalBorrowed,
-            uint256 totalReserves,
             /* UFixed256x18 borrowGrowthFactor */,
             /* uint256 lastSyncTimestamp */
         ) = previewSyncState();
 
-        uint256 totalLoaned = asset.balanceOf(address(this)) + totalBorrowed - totalReserves;
-
         // Unsafe division is safe here since the result will return zero when dividing by zero
-        rate = FixedPointMath.unsafeDiv(FixedPointMath.intoUFixed256x18(totalBorrowed), totalLoaned);
+        rate = FixedPointMath.unsafeDiv(FixedPointMath.intoUFixed256x18(totalBorrowed), totalSupplied);
     }
 
     /// @inheritdoc IIrautumPool
@@ -174,8 +150,8 @@ contract IrautumPool is IIrautumPool {
         public
         view
         returns (
+            uint256 totalSupplied,
             uint256 totalBorrowed,
-            uint256 totalReserves,
             UFixed256x18 borrowGrowthFactor,
             uint256 lastSyncTimestamp
         )
@@ -185,23 +161,23 @@ contract IrautumPool is IIrautumPool {
     function syncState()
         public
         returns (
+            uint256 totalSupplied,
             uint256 totalBorrowed,
-            uint256 totalReserves,
             UFixed256x18 borrowGrowthFactor,
             uint256 lastSyncTimestamp
         )
     {
         (
+            totalSupplied,
             totalBorrowed,
-            totalReserves,
             borrowGrowthFactor,
             lastSyncTimestamp
         ) = previewSyncState();
 
         if (lastSyncTimestamp < timestamp()) {
             state = State({
+                lastTotalSupplied: totalSupplied,
                 lastTotalBorrowed: totalBorrowed,
-                lastTotalReserves: totalReserves,
                 lastBorrowGrowthFactor: borrowGrowthFactor,
                 lastSyncTimestamp: lastSyncTimestamp
             });
@@ -324,7 +300,7 @@ contract IrautumPool is IIrautumPool {
         // assets which are available to be withdrawn. As such, we limit the maximum amount of assets that can be
         // withdrawn to the amount of assets that the contract currently has in its custody minus the assets which
         // are earmarked for reserves.
-        maxAssets = Math.min(convertToAssets(balanceOf[owner]), availableAssets());
+        maxAssets = Math.min(convertToAssets(balanceOf[owner]), asset.balanceOf(address(this)));
     }
 
     /// @inheritdoc IERC4626
@@ -358,7 +334,7 @@ contract IrautumPool is IIrautumPool {
         // assets which are available to be withdrawn. As such, we limit the maximum amount of shares that can be
         // redeemed to equivalent value of assets that the contract currently has in its custody minus the assets
         // which are earmarked for reserves.
-        maxShares = Math.min(balanceOf[owner], convertToShares(availableAssets()));
+        maxShares = Math.min(balanceOf[owner], convertToShares(asset.balanceOf(address(this))));
     }
 
     /// @inheritdoc IERC4626

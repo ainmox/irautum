@@ -11,10 +11,6 @@ interface IIrautumPool is IERC4626 {
     /// @return The deposit limit
     function depositLimit() external view returns (uint256);
 
-    /// @notice The proportion of the accrued interest that is retained for reserves
-    /// @return The reserve factor
-    function reserveFactor() external view returns (UFixed256x18);
-
     /// @notice The utilization that the pool is attempting to maintain
     /// @return The optimal utilization
     function optimalUtilizationRate() external view returns (UFixed256x18);
@@ -59,10 +55,6 @@ interface IIrautumPool is IERC4626 {
     /// @return The slope of the upper supply rate
     function slopeUpperSupplyRate() external view returns (UFixed256x18);
 
-    /// @notice The amount of assets that are available to be borrowed or withdrawn from the pool
-    /// @return The available assets
-    function availableAssets() external view returns (uint256);
-
     /// @notice The proportion of lent assets that are currently being borrowed
     /// @return rate The utilization rate
     function utilizationRate() external view returns (UFixed256x18 rate);
@@ -76,45 +68,45 @@ interface IIrautumPool is IERC4626 {
     function supplyRate() external view returns (UFixed256x18 rate);
 
     /// @notice The last recorded state of the pool
-    /// @return lastTotalBorrowed The last recorded total borrowed assets plus interest
-    /// @return lastTotalReserves The last recorded total reserves
+    /// @return lastTotalSupplied The last recorded total assets supplied for borrowing plus interest earned
+    /// @return lastTotalBorrowed The last recorded total assets borrowed plus interest accrued
     /// @return lastBorrowGrowthFactor The last recorded borrow growth factor
     /// @return lastSyncTimestamp The last recorded time that the pool was synchronized
     function state()
         external
         view
         returns (
+            uint256 lastTotalSupplied,
             uint256 lastTotalBorrowed,
-            uint256 lastTotalReserves,
             UFixed256x18 lastBorrowGrowthFactor,
             uint256 lastSyncTimestamp
         );
 
     /// @notice Previews synchronizing the state of the pool
-    /// @return totalBorrowed The total borrowed assets plus interest
-    /// @return totalReserves The total reserves
+    /// @return totalSupplied The total assets supplied for borrowing plus interest earned
+    /// @return totalBorrowed The total borrowed assets plus interest accrued
     /// @return borrowGrowthFactor The borrow growth factor
     /// @return lastSyncTimestamp The last recorded time that the pool was synchronized, excluding this call
     function previewSyncState()
         external
         view
         returns (
+            uint256 totalSupplied,
             uint256 totalBorrowed,
-            uint256 totalReserves,
             UFixed256x18 borrowGrowthFactor,
             uint256 lastSyncTimestamp
         );
 
     /// @notice Synchronizes the state of the pool
-    /// @return totalBorrowed The total borrowed assets plus interest
-    /// @return totalReserves The total reserves
+    /// @return totalSupplied The total assets supplied for borrowing plus interest earned
+    /// @return totalBorrowed The total borrowed assets plus interest accrued
     /// @return borrowGrowthFactor The borrow growth factor
     /// @return lastSyncTimestamp The last recorded time that the pool was synchronized, excluding this call
     function syncState()
         external
         returns (
+            uint256 totalSupplied,
             uint256 totalBorrowed,
-            uint256 totalReserves,
             UFixed256x18 borrowGrowthFactor,
             uint256 lastSyncTimestamp
         );

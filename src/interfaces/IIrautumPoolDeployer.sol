@@ -10,7 +10,6 @@ interface IIrautumPoolDeployer {
     struct DeploymentParameters {
         IERC20 asset;
         uint256 depositLimit;
-        UFixed256x18 reserveFactor;
         UFixed256x18 optimalUtilizationRate;
         UFixed256x18 minimumBorrowRate;
         UFixed256x18 maximumBorrowRate;
