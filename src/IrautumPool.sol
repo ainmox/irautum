@@ -373,8 +373,8 @@ contract IrautumPool is IIrautumPool {
 
         assets = previewRedeem(shares);
 
-        totalSupply -= shares;
         unchecked {
+            totalSupply -= shares;
             if (msg.sender != owner) allowance[owner][msg.sender] -= shares;
             balanceOf[owner] -= shares;
         }
