@@ -251,12 +251,12 @@ contract IrautumPool is IIrautumPool {
 
     /// @inheritdoc IERC4626
     function convertToShares(uint256 assets) public view returns (uint256 shares) {
-        shares = totalSupply > 0 ? assets * totalSupply / totalAssets() : assets;
+        shares = totalSupply > 0 ? Math.mulDiv(assets, totalSupply, totalAssets()) : assets;
     }
 
     /// @inheritdoc IERC4626
     function convertToAssets(uint256 shares) public view returns (uint256 assets) {
-        assets = totalSupply > 0 ? shares * totalAssets() / totalSupply : shares;
+        assets = totalSupply > 0 ? Math.mulDiv(shares, totalAssets(), totalSupply) : shares;
     }
 
     /// @inheritdoc IERC4626
