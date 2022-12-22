@@ -10,6 +10,22 @@ import {IIrautumPool} from "./interfaces/IIrautumPool.sol";
 
 using SafeERC20 for IERC20;
 
+struct DeploymentParameters {
+    IERC20 asset;
+    uint256 depositLimit;
+    UFixed256x18 optimalUtilizationRate;
+    UFixed256x18 minimumBorrowRate;
+    UFixed256x18 maximumBorrowRate;
+    UFixed256x18 optimalBorrowRate;
+    UFixed256x18 slopeLowerBorrowRate;
+    UFixed256x18 slopeUpperBorrowRate;
+    UFixed256x18 minimumSupplyRate;
+    UFixed256x18 maximumSupplyRate;
+    UFixed256x18 optimalSupplyRate;
+    UFixed256x18 slopeLowerSupplyRate;
+    UFixed256x18 slopeUpperSupplyRate;
+}
+
 contract IrautumPool is IIrautumPool {
     /// @inheritdoc IERC4626
     IERC20 public immutable override asset;
@@ -73,23 +89,7 @@ contract IrautumPool is IIrautumPool {
     /// @inheritdoc IIrautumPool
     State public override state;
 
-    struct InitializationParameters {
-        IERC20 asset;
-        uint256 depositLimit;
-        UFixed256x18 optimalUtilizationRate;
-        UFixed256x18 minimumBorrowRate;
-        UFixed256x18 maximumBorrowRate;
-        UFixed256x18 optimalBorrowRate;
-        UFixed256x18 slopeLowerBorrowRate;
-        UFixed256x18 slopeUpperBorrowRate;
-        UFixed256x18 minimumSupplyRate;
-        UFixed256x18 maximumSupplyRate;
-        UFixed256x18 optimalSupplyRate;
-        UFixed256x18 slopeLowerSupplyRate;
-        UFixed256x18 slopeUpperSupplyRate;
-    }
-
-    constructor(InitializationParameters memory params) {
+    constructor(DeploymentParameters memory params) {
         asset                  = params.asset;
         depositLimit           = params.depositLimit;
         optimalUtilizationRate = params.optimalUtilizationRate;
@@ -277,8 +277,6 @@ contract IrautumPool is IIrautumPool {
         emit Transfer(address(0), receiver, shares);
 
         emit Deposit(msg.sender, receiver, assets, shares);
-
-        asset.safeTransferFrom(msg.sender, address(this), assets);
     }
 
     /// @inheritdoc IERC4626
