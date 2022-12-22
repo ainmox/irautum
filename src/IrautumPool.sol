@@ -166,7 +166,14 @@ contract IrautumPool is IIrautumPool {
             UFixed256x18 borrowGrowthFactor,
             uint256 lastSyncTimestamp
         )
-    { }
+    {
+        (
+            totalSupplied,
+            totalBorrowed,
+            borrowGrowthFactor,
+            lastSyncTimestamp
+        ) = this.state();
+    }
 
     /// @inheritdoc IIrautumPool
     function syncState()
