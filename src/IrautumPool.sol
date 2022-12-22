@@ -248,10 +248,15 @@ contract IrautumPool is IIrautumPool {
 
     /// @inheritdoc IERC4626
     function maxDeposit(address) public view returns (uint256 maxAssets) {
-        uint256 loanedAssets = totalAssets();
+        (
+            uint256 totalSupplied,
+            /* uint256 totalBorrowed */,
+            /* UFixed256x18 borrowGrowthFactor */,
+            /* uint256 lastSyncTimestamp */
+        ) = previewSyncState();
 
         unchecked {
-            maxAssets = loanedAssets > depositLimit ? depositLimit - loanedAssets : 0;
+            maxAssets = depositLimit > totalSupplied ? depositLimit - totalSupplied : 0;
         }
     }
 
