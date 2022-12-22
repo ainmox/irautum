@@ -301,6 +301,17 @@ contract IrautumPool is IIrautumPool, ERC20 {
         require(assets <= maxWithdraw(owner));
         require(owner == msg.sender || (shares = previewWithdraw(assets)) <= allowance[owner][msg.sender]);
 
+        (
+            uint256 totalSupplied,
+            /* uint256 totalBorrowed */,
+            /* UFixed256x18 borrowGrowthFactor */,
+            /* uint256 lastSyncTimestamp */
+        ) = syncState();
+
+        unchecked {
+            state.lastTotalSupplied = totalSupplied - assets;
+        }
+
         _burn(owner, shares);
 
         emit Withdraw(msg.sender, receiver, owner, assets, shares);
