@@ -343,6 +343,17 @@ contract IrautumPool is IIrautumPool, ERC20 {
 
         assets = previewRedeem(shares);
 
+        (
+            uint256 totalSupplied,
+            /* uint256 totalBorrowed */,
+            /* UFixed256x18 borrowGrowthFactor */,
+            /* uint256 lastSyncTimestamp */
+        ) = syncState();
+
+        unchecked {
+            state.lastTotalSupplied = totalSupplied - assets;
+        }
+
         _burn(owner, shares);
 
         emit Withdraw(msg.sender, receiver, owner, assets, shares);
