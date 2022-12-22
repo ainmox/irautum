@@ -309,6 +309,7 @@ contract IrautumPool is IIrautumPool, ERC20 {
         ) = syncState();
 
         unchecked {
+            if (msg.sender != owner) allowance[owner][msg.sender] -= shares;
             state.lastTotalSupplied = totalSupplied - assets;
         }
 
@@ -351,6 +352,7 @@ contract IrautumPool is IIrautumPool, ERC20 {
         ) = syncState();
 
         unchecked {
+            if (msg.sender != owner) allowance[owner][msg.sender] -= shares;
             state.lastTotalSupplied = totalSupplied - assets;
         }
 
