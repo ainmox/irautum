@@ -228,6 +228,17 @@ contract IrautumPool is IIrautumPool, ERC20 {
         require(assets <= maxDeposit(msg.sender));
         shares = previewDeposit(assets);
 
+        (
+            uint256 totalSupplied,
+            /* uint256 totalBorrowed */,
+            /* UFixed256x18 borrowGrowthFactor */,
+            /* uint256 lastSyncTimestamp */
+        ) = syncState();
+
+        unchecked {
+            state.lastTotalSupplied = totalSupplied + assets;
+        }
+
         _mint(receiver, shares);
 
         emit Deposit(msg.sender, receiver, assets, shares);
