@@ -4,6 +4,7 @@ import {Math} from "solidity-commons/Math.sol";
 import {IERC20} from "solidity-standard-interfaces/IERC20.sol";
 import {IERC4626} from "solidity-standard-interfaces/IERC4626.sol";
 import {FixedPointMath, UFixed256x18} from "solidity-fixed-point/FixedPointMath.sol";
+import {ERC20} from "solidity-erc20/ERC20.sol";
 import {SafeERC20} from "solidity-erc20/SafeERC20.sol";
 
 import {IIrautumPool} from "./interfaces/IIrautumPool.sol";
@@ -26,7 +27,7 @@ struct DeploymentParameters {
     UFixed256x18 slopeUpperSupplyRate;
 }
 
-contract IrautumPool is IIrautumPool {
+contract IrautumPool is IIrautumPool, ERC20 {
     /// @inheritdoc IERC4626
     IERC20 public immutable override asset;
 
@@ -65,15 +66,6 @@ contract IrautumPool is IIrautumPool {
 
     /// @inheritdoc IIrautumPool
     UFixed256x18 public immutable override slopeUpperSupplyRate;
-
-    /// @inheritdoc IERC20
-    uint256 public override totalSupply;
-
-    /// @inheritdoc IERC20
-    mapping(address => uint256) public override balanceOf;
-
-    /// @inheritdoc IERC20
-    mapping(address => mapping(address => uint256)) public override allowance;
 
     struct State {
         // The last recorded total assets supplied plus interest earned
@@ -202,47 +194,6 @@ contract IrautumPool is IIrautumPool {
         }
     }
 
-    /// @inheritdoc IERC20
-    function approve(address spender, uint256 value) external returns (bool success) {
-        allowance[msg.sender][spender] = value;
-        emit Approval(msg.sender, spender, value);
-        success = true;
-    }
-
-    /// @inheritdoc IERC20
-    function transfer(address recipient, uint256 amount) external returns (bool success) {
-        uint256 balance = balanceOf[recipient];
-        require(balance >= amount, "Insufficient balance");
-
-        unchecked {
-            balanceOf[msg.sender] = balance - amount;
-            balanceOf[recipient] += amount;
-        }
-
-        emit Transfer(msg.sender, recipient, amount);
-
-        success = true;
-    }
-
-    /// @inheritdoc IERC20
-    function transferFrom(address owner, address recipient, uint256 amount) external returns (bool success) {
-        uint256 spendable = allowance[owner][msg.sender];
-        require(spendable >= amount, "Insufficient allowance");
-
-        uint256 balance = balanceOf[recipient];
-        require(balance >= amount, "Insufficient balance");
-
-        unchecked {
-            allowance[owner][msg.sender] = spendable - amount;
-            balanceOf[owner] = balance - amount;
-            balanceOf[recipient] += amount;
-        }
-
-        emit Transfer(owner, recipient, amount);
-
-        success = true;
-    }
-
     /// @inheritdoc IERC4626
     function convertToShares(uint256 assets) public view returns (uint256 shares) {
         shares = totalSupply > 0 ? Math.mulDiv(assets, totalSupply, totalAssets()) : assets;
@@ -277,13 +228,11 @@ contract IrautumPool is IIrautumPool {
         require(assets <= maxDeposit(msg.sender));
         shares = previewDeposit(assets);
 
-        totalSupply += shares;
-        unchecked {
-            balanceOf[receiver] += shares;
-        }
-        emit Transfer(address(0), receiver, shares);
+        _mint(receiver, shares);
 
         emit Deposit(msg.sender, receiver, assets, shares);
+
+        asset.safeTransferFrom(msg.sender, address(this), assets);
     }
 
     /// @inheritdoc IERC4626
@@ -301,11 +250,7 @@ contract IrautumPool is IIrautumPool {
         require(shares <= maxMint(receiver));
         assets = previewMint(shares);
 
-        totalSupply += shares;
-        unchecked {
-            balanceOf[receiver] += shares;
-        }
-        emit Transfer(address(0), receiver, shares);
+        _mint(receiver, shares);
 
         emit Deposit(msg.sender, receiver, assets, shares);
 
@@ -334,12 +279,7 @@ contract IrautumPool is IIrautumPool {
         require(assets <= maxWithdraw(owner));
         require(owner == msg.sender || (shares = previewWithdraw(assets)) <= allowance[owner][msg.sender]);
 
-        totalSupply -= shares;
-        unchecked {
-            if (msg.sender != owner) allowance[owner][msg.sender] -= shares;
-            balanceOf[owner] -= shares;
-        }
-        emit Transfer(owner, address(0), shares);
+        _burn(owner, shares);
 
         emit Withdraw(msg.sender, receiver, owner, assets, shares);
 
@@ -370,12 +310,7 @@ contract IrautumPool is IIrautumPool {
 
         assets = previewRedeem(shares);
 
-        unchecked {
-            totalSupply -= shares;
-            if (msg.sender != owner) allowance[owner][msg.sender] -= shares;
-            balanceOf[owner] -= shares;
-        }
-        emit Transfer(owner, address(0), shares);
+        _burn(owner, shares);
 
         emit Withdraw(msg.sender, receiver, owner, assets, shares);
 
