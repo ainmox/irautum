@@ -7,7 +7,6 @@ import {FixedPointMath, UFixed256x18} from "solidity-fixed-point/FixedPointMath.
 import {SafeERC20} from "solidity-erc20/SafeERC20.sol";
 
 import {IIrautumPool} from "./interfaces/IIrautumPool.sol";
-import {IIrautumPoolDeployer} from "./interfaces/IIrautumPoolDeployer.sol";
 
 using SafeERC20 for IERC20;
 
@@ -74,11 +73,23 @@ contract IrautumPool is IIrautumPool {
     /// @inheritdoc IIrautumPool
     State public override state;
 
-    constructor() {
-        IIrautumPoolDeployer deployer = IIrautumPoolDeployer(msg.sender);
+    struct InitializationParameters {
+        IERC20 asset;
+        uint256 depositLimit;
+        UFixed256x18 optimalUtilizationRate;
+        UFixed256x18 minimumBorrowRate;
+        UFixed256x18 maximumBorrowRate;
+        UFixed256x18 optimalBorrowRate;
+        UFixed256x18 slopeLowerBorrowRate;
+        UFixed256x18 slopeUpperBorrowRate;
+        UFixed256x18 minimumSupplyRate;
+        UFixed256x18 maximumSupplyRate;
+        UFixed256x18 optimalSupplyRate;
+        UFixed256x18 slopeLowerSupplyRate;
+        UFixed256x18 slopeUpperSupplyRate;
+    }
 
-        IIrautumPoolDeployer.DeploymentParameters memory params = deployer.deploymentParameters();
-
+    constructor(InitializationParameters memory params) {
         asset                  = params.asset;
         depositLimit           = params.depositLimit;
         optimalUtilizationRate = params.optimalUtilizationRate;
