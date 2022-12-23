@@ -299,7 +299,9 @@ contract IrautumPool is IIrautumPool, ERC20 {
     /// @inheritdoc IERC4626
     function withdraw(uint256 assets, address receiver, address owner) public returns (uint256 shares) {
         require(assets <= maxWithdraw(owner));
-        require(owner == msg.sender || (shares = previewWithdraw(assets)) <= allowance[owner][msg.sender]);
+
+        shares = shares = previewWithdraw(assets);
+        require(owner == msg.sender || shares <= allowance[owner][msg.sender]);
 
         (
             uint256 totalSupplied,
