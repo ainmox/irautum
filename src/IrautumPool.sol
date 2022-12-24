@@ -105,21 +105,21 @@ contract IrautumPool is IIrautumPool, ERC20 {
 
     /// @notice Gets the pool parameters
     /// @return The parameters
-    function parameters() external view returns (Parameters memory) {
-        return Parameters({
-            asset: asset,
-            depositLimit: depositLimit,
+    function parameters() external view returns (Parameters memory params) {
+        params = Parameters({
+            asset:                  asset,
+            depositLimit:           depositLimit,
             optimalUtilizationRate: optimalUtilizationRate,
-            minimumBorrowRate: minimumBorrowRate,
-            maximumBorrowRate: maximumBorrowRate,
-            optimalBorrowRate: optimalBorrowRate,
-            slopeLowerBorrowRate: slopeLowerBorrowRate,
-            slopeUpperBorrowRate: slopeUpperBorrowRate,
-            minimumSupplyRate: minimumSupplyRate,
-            maximumSupplyRate: maximumSupplyRate,
-            optimalSupplyRate: optimalSupplyRate,
-            slopeLowerSupplyRate: slopeLowerSupplyRate,
-            slopeUpperSupplyRate: slopeUpperSupplyRate
+            minimumBorrowRate:      minimumBorrowRate,
+            maximumBorrowRate:      maximumBorrowRate,
+            optimalBorrowRate:      optimalBorrowRate,
+            slopeLowerBorrowRate:   slopeLowerBorrowRate,
+            slopeUpperBorrowRate:   slopeUpperBorrowRate,
+            minimumSupplyRate:      minimumSupplyRate,
+            maximumSupplyRate:      maximumSupplyRate,
+            optimalSupplyRate:      optimalSupplyRate,
+            slopeLowerSupplyRate:   slopeLowerSupplyRate,
+            slopeUpperSupplyRate:   slopeUpperSupplyRate
         });
     }
 
