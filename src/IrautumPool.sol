@@ -103,7 +103,7 @@ contract IrautumPool is IIrautumPool, ERC20 {
         return block.timestamp;
     }
 
-    /// @notice Gets the pool parameters
+    /// @notice The pool parameters
     /// @return params The parameters
     function parameters() external view returns (Parameters memory params) {
         params = Parameters({
