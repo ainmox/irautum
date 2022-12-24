@@ -11,7 +11,7 @@ import {IIrautumPool} from "./interfaces/IIrautumPool.sol";
 
 using SafeERC20 for IERC20;
 
-struct DeploymentParameters {
+struct Parameters {
     IERC20 asset;
     uint256 depositLimit;
     UFixed256x18 optimalUtilizationRate;
@@ -81,7 +81,7 @@ contract IrautumPool is IIrautumPool, ERC20 {
     /// @inheritdoc IIrautumPool
     State public override state;
 
-    constructor(DeploymentParameters memory params) {
+    constructor(Parameters memory params) {
         asset                  = params.asset;
         depositLimit           = params.depositLimit;
         optimalUtilizationRate = params.optimalUtilizationRate;
