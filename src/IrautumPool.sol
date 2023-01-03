@@ -138,7 +138,7 @@ contract IrautumPool is IIrautumPool, ERC20 {
     }
 
     /// @inheritdoc IIrautumPool
-    function supplyRate() external view returns (UFixed256x18 rate) {
+    function supplyRate() public view returns (UFixed256x18 rate) {
         UFixed256x18 utilization = utilizationRate();
 
         if (utilization.cmp(optimalUtilizationRate) <= 0) {
@@ -165,6 +165,21 @@ contract IrautumPool is IIrautumPool, ERC20 {
             borrowGrowthFactor,
             lastSyncTimestamp
         ) = this.state();
+
+        if (lastSyncTimestamp < timestamp()) {
+            uint256 secondsElapsed;
+            unchecked {
+                secondsElapsed = timestamp() - lastSyncTimestamp;
+            }
+
+            UFixed256x18 supplyExponent = FixedPointMath.unsafeMul(supplyRate(), secondsElapsed);
+            UFixed256x18 borrowExponent = FixedPointMath.unsafeMul(borrowRate(), secondsElapsed);
+
+            totalSupplied = FixedPointMath.round(FixedPointMath.mul(FixedPointMath.exp(supplyExponent), totalSupplied));
+            totalBorrowed = FixedPointMath.round(FixedPointMath.mul(FixedPointMath.exp(borrowExponent), totalBorrowed));
+
+            borrowGrowthFactor = FixedPointMath.add(borrowGrowthFactor, borrowExponent);
+        }
     }
 
     /// @inheritdoc IIrautumPool
