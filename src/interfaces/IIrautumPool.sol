@@ -82,7 +82,7 @@ interface IIrautumPool is IERC4626 {
             uint256 lastSyncTimestamp
         );
 
-    /// @notice Previews synchronizing the state of the pool
+    /// @notice Previews synchronizing the pool
     /// @return totalSupplied The total assets supplied for borrowing plus interest earned
     /// @return totalBorrowed The total borrowed assets plus interest accrued
     /// @return borrowGrowthFactor The borrow growth factor
@@ -97,7 +97,7 @@ interface IIrautumPool is IERC4626 {
             uint256 lastSyncTimestamp
         );
 
-    /// @notice Synchronizes the state of the pool
+    /// @notice Synchronizes the pool
     /// @return totalSupplied The total assets supplied for borrowing plus interest earned
     /// @return totalBorrowed The total borrowed assets plus interest accrued
     /// @return borrowGrowthFactor The borrow growth factor
