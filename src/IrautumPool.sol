@@ -178,8 +178,10 @@ contract IrautumPool is IIrautumPool, ERC20 {
                 secondsElapsed = timestamp() - lastSyncTimestamp;
             }
 
-            UFixed256x18 supplyExponent = FixedPointMath.unsafeMul(supplyRate(), secondsElapsed);
-            UFixed256x18 borrowExponent = FixedPointMath.unsafeMul(borrowRate(), secondsElapsed);
+            UFixed256x18 utilization = utilizationRate();
+
+            UFixed256x18 supplyExponent = FixedPointMath.unsafeMul(supplyRate(utilization), secondsElapsed);
+            UFixed256x18 borrowExponent = FixedPointMath.unsafeMul(borrowRate(utilization), secondsElapsed);
 
             totalSupplied = FixedPointMath.round(FixedPointMath.mul(FixedPointMath.exp(supplyExponent), totalSupplied));
             totalBorrowed = FixedPointMath.round(FixedPointMath.mul(FixedPointMath.exp(borrowExponent), totalBorrowed));
