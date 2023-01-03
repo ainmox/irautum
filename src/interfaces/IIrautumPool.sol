@@ -63,9 +63,19 @@ interface IIrautumPool is IERC4626 {
     /// @return rate The borrow rate
     function borrowRate() external view returns (UFixed256x18 rate);
 
+    /// @notice The borrow rate at a specific utilization
+    /// @param utilization The utilization rate
+    /// @return rate The borrow rate
+    function borrowRate(UFixed256x18 utilization) external view returns (UFixed256x18 rate);
+
     /// @notice The current per second rate that lenders accrue interest
     /// @return rate The supply rate
     function supplyRate() external view returns (UFixed256x18 rate);
+
+    /// @notice The supply rate at a specific utilization
+    /// @param utilization The utilization rate
+    /// @return rate The supply rate
+    function supplyRate(UFixed256x18 utilization) external view returns (UFixed256x18 rate);
 
     /// @notice The last recorded state of the pool
     /// @return lastTotalSupplied The last recorded total assets supplied for borrowing plus interest earned

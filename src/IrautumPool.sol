@@ -128,8 +128,11 @@ contract IrautumPool is IIrautumPool, ERC20 {
 
     /// @inheritdoc IIrautumPool
     function borrowRate() public view returns (UFixed256x18 rate) {
-        UFixed256x18 utilization = utilizationRate();
+        rate = borrowRate(utilizationRate());
+    }
 
+    /// @inheritdoc IIrautumPool
+    function borrowRate(UFixed256x18 utilization) public view returns (UFixed256x18 rate) {
         if (utilization.cmp(optimalUtilizationRate) <= 0) {
             rate = minimumBorrowRate.add(slopeLowerBorrowRate.mul(utilization));
         } else {
@@ -139,8 +142,11 @@ contract IrautumPool is IIrautumPool, ERC20 {
 
     /// @inheritdoc IIrautumPool
     function supplyRate() public view returns (UFixed256x18 rate) {
-        UFixed256x18 utilization = utilizationRate();
+        rate = supplyRate(utilizationRate());
+    }
 
+    /// @inheritdoc IIrautumPool
+    function supplyRate(UFixed256x18 utilization) public view returns (UFixed256x18 rate) {
         if (utilization.cmp(optimalUtilizationRate) <= 0) {
             rate = minimumSupplyRate.add(slopeLowerSupplyRate.mul(utilization));
         } else {
