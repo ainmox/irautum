@@ -87,7 +87,7 @@ interface IIrautumPool is IERC4626 {
     /// @return totalBorrowed The total borrowed assets plus interest accrued
     /// @return borrowGrowthFactor The borrow growth factor
     /// @return lastSyncTimestamp The last recorded time that the pool was synchronized, excluding this call
-    function previewSyncState()
+    function previewSync()
         external
         view
         returns (
@@ -102,7 +102,7 @@ interface IIrautumPool is IERC4626 {
     /// @return totalBorrowed The total borrowed assets plus interest accrued
     /// @return borrowGrowthFactor The borrow growth factor
     /// @return lastSyncTimestamp The last recorded time that the pool was synchronized, excluding this call
-    function syncState()
+    function sync()
         external
         returns (
             uint256 totalSupplied,

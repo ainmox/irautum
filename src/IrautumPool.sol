@@ -110,7 +110,7 @@ contract IrautumPool is IIrautumPool, ERC20 {
             /* uint256 totalBorrowed */,
             /* UFixed256x18 borrowGrowthFactor */,
             /* uint256 lastSyncTimestamp */
-        ) = previewSyncState();
+        ) = previewSync();
     }
 
     /// @inheritdoc IIrautumPool
@@ -120,7 +120,7 @@ contract IrautumPool is IIrautumPool, ERC20 {
             uint256 totalBorrowed,
             /* UFixed256x18 borrowGrowthFactor */,
             /* uint256 lastSyncTimestamp */
-        ) = previewSyncState();
+        ) = previewSync();
 
         // Unsafe division is safe here since the result will return zero when dividing by zero
         rate = FixedPointMath.unsafeDiv(FixedPointMath.intoUFixed256x18(totalBorrowed), totalSupplied);
@@ -149,7 +149,7 @@ contract IrautumPool is IIrautumPool, ERC20 {
     }
 
     /// @inheritdoc IIrautumPool
-    function previewSyncState()
+    function previewSync()
         public
         view
         returns (
@@ -183,7 +183,7 @@ contract IrautumPool is IIrautumPool, ERC20 {
     }
 
     /// @inheritdoc IIrautumPool
-    function syncState()
+    function sync()
         public
         returns (
             uint256 totalSupplied,
@@ -197,7 +197,7 @@ contract IrautumPool is IIrautumPool, ERC20 {
             totalBorrowed,
             borrowGrowthFactor,
             lastSyncTimestamp
-        ) = previewSyncState();
+        ) = previewSync();
 
         if (lastSyncTimestamp < timestamp()) {
             state = State({
@@ -226,7 +226,7 @@ contract IrautumPool is IIrautumPool, ERC20 {
             /* uint256 totalBorrowed */,
             /* UFixed256x18 borrowGrowthFactor */,
             /* uint256 lastSyncTimestamp */
-        ) = previewSyncState();
+        ) = previewSync();
 
         unchecked {
             maxAssets = depositLimit > totalSupplied ? depositLimit - totalSupplied : 0;
@@ -248,7 +248,7 @@ contract IrautumPool is IIrautumPool, ERC20 {
             /* uint256 totalBorrowed */,
             /* UFixed256x18 borrowGrowthFactor */,
             /* uint256 lastSyncTimestamp */
-        ) = syncState();
+        ) = sync();
 
         unchecked {
             state.lastTotalSupplied = totalSupplied + assets;
@@ -281,7 +281,7 @@ contract IrautumPool is IIrautumPool, ERC20 {
             /* uint256 totalBorrowed */,
             /* UFixed256x18 borrowGrowthFactor */,
             /* uint256 lastSyncTimestamp */
-        ) = syncState();
+        ) = sync();
 
         unchecked {
             state.lastTotalSupplied = totalSupplied + assets;
@@ -323,7 +323,7 @@ contract IrautumPool is IIrautumPool, ERC20 {
             /* uint256 totalBorrowed */,
             /* UFixed256x18 borrowGrowthFactor */,
             /* uint256 lastSyncTimestamp */
-        ) = syncState();
+        ) = sync();
 
         unchecked {
             if (msg.sender != owner) allowance[owner][msg.sender] -= shares;
@@ -366,7 +366,7 @@ contract IrautumPool is IIrautumPool, ERC20 {
             /* uint256 totalBorrowed */,
             /* UFixed256x18 borrowGrowthFactor */,
             /* uint256 lastSyncTimestamp */
-        ) = syncState();
+        ) = sync();
 
         unchecked {
             if (msg.sender != owner) allowance[owner][msg.sender] -= shares;
