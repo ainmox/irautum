@@ -120,4 +120,52 @@ interface IIrautumPool is IERC4626 {
             UFixed256x18 borrowGrowthFactor,
             uint256 lastSyncTimestamp
         );
+
+    /// @inheritdoc IERC4626
+    function asset() external view override returns (IERC20);
+
+    /// @inheritdoc IERC4626
+    function totalAssets() external view override returns (uint256);
+
+    /// @inheritdoc IERC4626
+    function convertToShares(uint256 assets) external view override returns (uint256 shares);
+
+    /// @inheritdoc IERC4626
+    function convertToAssets(uint256 shares) external view override returns (uint256 assets);
+
+    /// @inheritdoc IERC4626
+    function maxDeposit(address receiver) external view override returns (uint256 maxAssets);
+
+    /// @inheritdoc IERC4626
+    function previewDeposit(uint256 assets) external view override returns (uint256 shares);
+
+    /// @inheritdoc IERC4626
+    function deposit(uint256 assets, address receiver) external override returns (uint256 shares);
+
+    /// @inheritdoc IERC4626
+    function maxMint(address receiver) external view override returns (uint256 maxShares);
+
+    /// @inheritdoc IERC4626
+    function previewMint(uint256 shares) external view override returns (uint256 assets);
+
+    /// @inheritdoc IERC4626
+    function mint(uint256 shares, address receiver) external override returns (uint256 assets);
+
+    /// @inheritdoc IERC4626
+    function maxWithdraw(address owner) external view override returns (uint256 maxAssets);
+
+    /// @inheritdoc IERC4626
+    function previewWithdraw(uint256 assets) external view override returns (uint256 shares);
+
+    /// @inheritdoc IERC4626
+    function withdraw(uint256 assets, address receiver, address owner) external override returns (uint256 shares);
+
+    /// @inheritdoc IERC4626
+    function maxRedeem(address owner) external view override returns (uint256 maxShares);
+
+    /// @inheritdoc IERC4626
+    function previewRedeem(uint256 shares) external view override returns (uint256 assets);
+
+    /// @inheritdoc IERC4626
+    function redeem(uint256 shares, address receiver, address owner) external override returns (uint256 assets);
 }
