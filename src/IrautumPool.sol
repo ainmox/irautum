@@ -69,13 +69,13 @@ contract IrautumPool is IIrautumPool, ERC20 {
 
     struct State {
         // The last recorded total assets supplied plus interest earned
-        uint256 lastTotalSupplied;
+        uint256 totalSupplied;
         // The last recorded total borrowed assets plus interest charged
-        uint256 lastTotalBorrowed;
+        uint256 totalBorrowed;
         // The last recorded borrow growth factor
-        UFixed256x18 lastBorrowGrowthFactor;
-        //  The last recorded time that the pool was synchronized
-        uint256 lastSyncTimestamp;
+        UFixed256x18 borrowGrowthFactor;
+        // The last recorded time that the pool was synchronized
+        uint256 syncTimestamp;
     }
 
     /// @inheritdoc IIrautumPool
@@ -214,10 +214,10 @@ contract IrautumPool is IIrautumPool, ERC20 {
 
         if (lastSyncTimestamp < timestamp()) {
             state = State({
-                lastTotalSupplied: totalSupplied,
-                lastTotalBorrowed: totalBorrowed,
-                lastBorrowGrowthFactor: borrowGrowthFactor,
-                lastSyncTimestamp: lastSyncTimestamp
+                totalSupplied: totalSupplied,
+                totalBorrowed: totalBorrowed,
+                borrowGrowthFactor: borrowGrowthFactor,
+                syncTimestamp: lastSyncTimestamp
             });
         }
     }
@@ -264,7 +264,7 @@ contract IrautumPool is IIrautumPool, ERC20 {
         ) = sync();
 
         unchecked {
-            state.lastTotalSupplied = totalSupplied + assets;
+            state.totalSupplied = totalSupplied + assets;
         }
 
         _mint(receiver, shares);
@@ -297,7 +297,7 @@ contract IrautumPool is IIrautumPool, ERC20 {
         ) = sync();
 
         unchecked {
-            state.lastTotalSupplied = totalSupplied + assets;
+            state.totalSupplied = totalSupplied + assets;
         }
 
         _mint(receiver, shares);
@@ -340,7 +340,7 @@ contract IrautumPool is IIrautumPool, ERC20 {
 
         unchecked {
             if (msg.sender != owner) allowance[owner][msg.sender] -= shares;
-            state.lastTotalSupplied = totalSupplied - assets;
+            state.totalSupplied = totalSupplied - assets;
         }
 
         _burn(owner, shares);
@@ -383,7 +383,7 @@ contract IrautumPool is IIrautumPool, ERC20 {
 
         unchecked {
             if (msg.sender != owner) allowance[owner][msg.sender] -= shares;
-            state.lastTotalSupplied = totalSupplied - assets;
+            state.totalSupplied = totalSupplied - assets;
         }
 
         _burn(owner, shares);
