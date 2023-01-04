@@ -9,23 +9,9 @@ import {SafeERC20} from "solidity-erc20/SafeERC20.sol";
 
 import {IIrautumPool} from "./interfaces/IIrautumPool.sol";
 
-using SafeERC20 for IERC20;
+import {Pool, Parameters} from "./libraries/Pool.sol";
 
-struct Parameters {
-    IERC20 asset;
-    uint256 depositLimit;
-    UFixed256x18 optimalUtilizationRate;
-    UFixed256x18 minimumBorrowRate;
-    UFixed256x18 maximumBorrowRate;
-    UFixed256x18 optimalBorrowRate;
-    UFixed256x18 slopeLowerBorrowRate;
-    UFixed256x18 slopeUpperBorrowRate;
-    UFixed256x18 minimumSupplyRate;
-    UFixed256x18 maximumSupplyRate;
-    UFixed256x18 optimalSupplyRate;
-    UFixed256x18 slopeLowerSupplyRate;
-    UFixed256x18 slopeUpperSupplyRate;
-}
+using SafeERC20 for IERC20;
 
 contract IrautumPool is IIrautumPool, ERC20 {
     /// @inheritdoc IERC4626
