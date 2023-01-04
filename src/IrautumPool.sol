@@ -97,6 +97,26 @@ contract IrautumPool is IIrautumPool, ERC20 {
         slopeUpperSupplyRate   = params.slopeUpperSupplyRate;
     }
 
+    /// @notice The pool parameters
+    /// @return params The parameters
+    function parameters() public view returns (Parameters memory params) {
+        params = Parameters({
+            asset:                  asset,
+            depositLimit:           depositLimit,
+            optimalUtilizationRate: optimalUtilizationRate,
+            minimumBorrowRate:      minimumBorrowRate,
+            maximumBorrowRate:      maximumBorrowRate,
+            optimalBorrowRate:      optimalBorrowRate,
+            slopeLowerBorrowRate:   slopeLowerBorrowRate,
+            slopeUpperBorrowRate:   slopeUpperBorrowRate,
+            minimumSupplyRate:      minimumSupplyRate,
+            maximumSupplyRate:      maximumSupplyRate,
+            optimalSupplyRate:      optimalSupplyRate,
+            slopeLowerSupplyRate:   slopeLowerSupplyRate,
+            slopeUpperSupplyRate:   slopeUpperSupplyRate
+        });
+    }
+
     /// @notice Gets the current block timestamp
     /// @return The current block timestamp
     function timestamp() public view returns (uint256) {
