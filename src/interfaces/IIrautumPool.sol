@@ -122,49 +122,49 @@ interface IIrautumPool is IERC4626 {
         );
     
     /// @inheritdoc IERC4626
-    function asset() external view returns (IERC20);
+    function asset() external view override returns (IERC20);
 
     /// @inheritdoc IERC4626
-    function totalAssets() external view returns (uint256);
+    function totalAssets() external view override returns (uint256);
 
     /// @inheritdoc IERC4626
-    function convertToShares(uint256 assets) external view returns (uint256 shares);
+    function convertToShares(uint256 assets) external view override returns (uint256 shares);
 
     /// @inheritdoc IERC4626
-    function convertToAssets(uint256 shares) external view returns (uint256 assets);
+    function convertToAssets(uint256 shares) external view override returns (uint256 assets);
 
     /// @inheritdoc IERC4626
-    function maxDeposit(address receiver) external view returns (uint256 maxAssets);
+    function maxDeposit(address receiver) external view override returns (uint256 maxAssets);
 
     /// @inheritdoc IERC4626
-    function previewDeposit(uint256 assets) external view returns (uint256 shares);
+    function previewDeposit(uint256 assets) external view override returns (uint256 shares);
 
     /// @inheritdoc IERC4626
-    function deposit(uint256 assets, address receiver) external returns (uint256 shares);
+    function deposit(uint256 assets, address receiver) external override returns (uint256 shares);
 
     /// @inheritdoc IERC4626
-    function maxMint(address receiver) external view returns (uint256 maxShares);
+    function maxMint(address receiver) external view override returns (uint256 maxShares);
 
     /// @inheritdoc IERC4626
-    function previewMint(uint256 shares) external view returns (uint256 assets);
+    function previewMint(uint256 shares) external view override returns (uint256 assets);
 
     /// @inheritdoc IERC4626
-    function mint(uint256 shares, address receiver) external returns (uint256 assets);
+    function mint(uint256 shares, address receiver) external override returns (uint256 assets);
 
     /// @inheritdoc IERC4626
-    function maxWithdraw(address owner) external view returns (uint256 maxAssets);
+    function maxWithdraw(address owner) external view override returns (uint256 maxAssets);
 
     /// @inheritdoc IERC4626
-    function previewWithdraw(uint256 assets) external view returns (uint256 shares);
+    function previewWithdraw(uint256 assets) external view override returns (uint256 shares);
 
     /// @inheritdoc IERC4626
-    function withdraw(uint256 assets, address receiver, address owner) external returns (uint256 shares);
+    function withdraw(uint256 assets, address receiver, address owner) external override returns (uint256 shares);
 
     /// @inheritdoc IERC4626
-    function maxRedeem(address owner) external view returns (uint256 maxShares);
+    function maxRedeem(address owner) external view override returns (uint256 maxShares);
 
     /// @inheritdoc IERC4626
-    function previewRedeem(uint256 shares) external view returns (uint256 assets);
+    function previewRedeem(uint256 shares) external view override returns (uint256 assets);
 
     /// @inheritdoc IERC4626
     function redeem(uint256 shares, address receiver, address owner) external override returns (uint256 assets);
