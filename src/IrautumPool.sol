@@ -14,7 +14,7 @@ import {Pool, Parameters} from "./libraries/Pool.sol";
 using SafeERC20 for IERC20;
 
 contract IrautumPool is IIrautumPool, ERC20 {
-    /// @inheritdoc IERC4626
+    /// @inheritdoc IIrautumPool
     IERC20 public immutable override asset;
 
     /// @inheritdoc IIrautumPool
@@ -222,17 +222,17 @@ contract IrautumPool is IIrautumPool, ERC20 {
         }
     }
 
-    /// @inheritdoc IERC4626
+    /// @inheritdoc IIrautumPool
     function convertToShares(uint256 assets) public view returns (uint256 shares) {
         shares = totalSupply > 0 ? Math.mulDiv(assets, totalSupply, totalAssets()) : assets;
     }
 
-    /// @inheritdoc IERC4626
+    /// @inheritdoc IIrautumPool
     function convertToAssets(uint256 shares) public view returns (uint256 assets) {
         assets = totalSupply > 0 ? Math.mulDiv(shares, totalAssets(), totalSupply) : shares;
     }
 
-    /// @inheritdoc IERC4626
+    /// @inheritdoc IIrautumPool
     function maxDeposit(address) public view returns (uint256 maxAssets) {
         (
             uint256 totalSupplied,
@@ -246,12 +246,12 @@ contract IrautumPool is IIrautumPool, ERC20 {
         }
     }
 
-    /// @inheritdoc IERC4626
+    /// @inheritdoc IIrautumPool
     function previewDeposit(uint256 assets) public view returns (uint256 shares) {
         shares = convertToShares(assets);
     }
 
-    /// @inheritdoc IERC4626
+    /// @inheritdoc IIrautumPool
     function deposit(uint256 assets, address receiver) external returns (uint256 shares) {
         require(assets <= maxDeposit(msg.sender));
         shares = previewDeposit(assets);
@@ -274,17 +274,17 @@ contract IrautumPool is IIrautumPool, ERC20 {
         asset.safeTransferFrom(msg.sender, address(this), assets);
     }
 
-    /// @inheritdoc IERC4626
+    /// @inheritdoc IIrautumPool
     function maxMint(address receiver) public view returns (uint256 maxShares) {
         maxShares = convertToShares(maxDeposit(receiver));
     }
 
-    /// @inheritdoc IERC4626
+    /// @inheritdoc IIrautumPool
     function previewMint(uint256 shares) public view returns (uint256 assets) {
         assets = convertToAssets(shares);
     }
 
-    /// @inheritdoc IERC4626
+    /// @inheritdoc IIrautumPool
     function mint(uint256 shares, address receiver) public returns (uint256 assets) {
         require(shares <= maxMint(receiver));
         assets = previewMint(shares);
@@ -307,7 +307,7 @@ contract IrautumPool is IIrautumPool, ERC20 {
         asset.safeTransferFrom(msg.sender, address(this), assets);
     }
 
-    /// @inheritdoc IERC4626
+    /// @inheritdoc IIrautumPool
     function maxWithdraw(address owner) public view returns (uint256 maxAssets) {
         // As per the ERC4626 specification this function "MUST return the maximum amount of assets that could be
         // transferred from owner through withdraw and not cause a revert, which MUST NOT be higher than the actual
@@ -319,12 +319,12 @@ contract IrautumPool is IIrautumPool, ERC20 {
         maxAssets = Math.min(convertToAssets(balanceOf[owner]), asset.balanceOf(address(this)));
     }
 
-    /// @inheritdoc IERC4626
+    /// @inheritdoc IIrautumPool
     function previewWithdraw(uint256 assets) public view returns (uint256 shares) {
         shares = convertToShares(assets);
     }
 
-    /// @inheritdoc IERC4626
+    /// @inheritdoc IIrautumPool
     function withdraw(uint256 assets, address receiver, address owner) public returns (uint256 shares) {
         require(assets <= maxWithdraw(owner));
 
@@ -350,7 +350,7 @@ contract IrautumPool is IIrautumPool, ERC20 {
         asset.safeTransfer(receiver, assets);
     }
 
-    /// @inheritdoc IERC4626
+    /// @inheritdoc IIrautumPool
     function maxRedeem(address owner) public view returns (uint256 maxShares) {
         // As per the ERC4626 specification this function "MUST return the maximum amount of shares that could be
         // transferred from owner through redeem and not cause a revert, which MUST NOT be higher than the actual
@@ -362,12 +362,12 @@ contract IrautumPool is IIrautumPool, ERC20 {
         maxShares = Math.min(balanceOf[owner], convertToShares(asset.balanceOf(address(this))));
     }
 
-    /// @inheritdoc IERC4626
+    /// @inheritdoc IIrautumPool
     function previewRedeem(uint256 shares) public view returns (uint256 assets) {
         assets = convertToAssets(shares);
     }
 
-    /// @inheritdoc IERC4626
+    /// @inheritdoc IIrautumPool
     function redeem(uint256 shares, address receiver, address owner) public returns (uint256 assets) {
         require(shares <= maxRedeem(owner));
         require(owner == msg.sender || shares <= allowance[owner][msg.sender]);
