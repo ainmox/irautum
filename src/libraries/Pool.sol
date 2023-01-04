@@ -26,7 +26,10 @@ library Pool {
     /// @param params The pool parameters
     /// @param utilization The utilization rate
     /// @return rate The borrow rate
-    function borrowRate(Parameters memory params, UFixed256x18 utilization) internal pure returns (UFixed256x18 rate) {
+    function borrowRate(
+        Parameters memory params,
+        UFixed256x18 utilization
+    ) internal pure returns (UFixed256x18 rate) {
         rate = calculateRate(
             utilization,
             params.optimalBorrowRate,
@@ -42,7 +45,10 @@ library Pool {
     /// @param params The pool parameters
     /// @param utilization The utilization rate
     /// @return rate The supply rate
-    function supplyRate(Parameters memory params, UFixed256x18 utilization) internal pure returns (UFixed256x18 rate) {
+    function supplyRate(
+        Parameters memory params,
+        UFixed256x18 utilization
+    ) internal pure returns (UFixed256x18 rate) {
         rate = calculateRate(
             utilization,
             params.optimalSupplyRate,
