@@ -109,7 +109,7 @@ contract IrautumPool is IIrautumPool, ERC20 {
         return block.timestamp;
     }
 
-    /// @inheritdoc IERC4626
+    /// @inheritdoc IIrautumPool
     function totalAssets() public view returns (uint256) {
         (
             uint256 totalSupplied,
