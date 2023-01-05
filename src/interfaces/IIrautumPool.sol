@@ -192,6 +192,16 @@ interface IIrautumPool is IERC4626 {
     /// @param owner The address of the owner
     function borrow(uint256 assets, address receiver, address owner) external;
 
+    /// @notice The maximum amount of assets that can be repaid to the position owned by `receiver`
+    /// @param receiver The address of the receiver
+    /// @return maxAssets The maximum amount of assets that can be repaid
+    function maxRepay(address receiver) external view returns (uint256 maxAssets);
+
+    /// @notice Repays `assets` assets to `receiver`
+    /// @param assets The amount of assets to repay
+    /// @param receiver The address to receive the repaid assets
+    function repay(uint256 assets, address receiver) external;
+
     /// @inheritdoc IERC4626
     function asset() external view override returns (IERC20);
 

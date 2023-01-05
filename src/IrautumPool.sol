@@ -287,6 +287,12 @@ contract IrautumPool is IIrautumPool, ERC20 {
     function borrow(uint256 assets, address receiver, address owner) external { }
 
     /// @inheritdoc IIrautumPool
+    function maxRepay(address receiver) external view returns (uint256 maxAssets) { }
+
+    /// @inheritdoc IIrautumPool
+    function repay(uint256 assets, address receiver) external { }
+
+    /// @inheritdoc IIrautumPool
     function convertToShares(uint256 assets) public view returns (uint256 shares) {
         shares = totalSupply > 0 ? Math.mulDiv(assets, totalSupply, totalAssets()) : assets;
     }
