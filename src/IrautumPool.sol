@@ -269,6 +269,9 @@ contract IrautumPool is IIrautumPool, ERC20 {
     }
 
     /// @inheritdoc IIrautumPool
+    function isLiquidatable(address owner) external view returns (bool status) { }
+
+    /// @inheritdoc IIrautumPool
     function absorb(address[] memory owners) external { }
 
     /// @inheritdoc IIrautumPool

@@ -157,6 +157,10 @@ interface IIrautumPool is IERC4626 {
             uint256 lastSyncTimestamp
         );
 
+    /// @notice Gets if the position owned by `owner` is liquidatable
+    /// @return status `true` if the position is liquidatable, `false` otherwise
+    function isLiquidatable(address owner) external view returns (bool status);
+
     /// @notice Absorbs a list of positions
     /// @param owners The owners of the positions to absorb
     function absorb(address[] memory owners) external;
