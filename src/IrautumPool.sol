@@ -11,9 +11,8 @@ import {IIrautumPool} from "./interfaces/IIrautumPool.sol";
 
 import {Pool, Parameters} from "./libraries/Pool.sol";
 import {Vault, Parameters as VaultParameters} from "./libraries/Vault.sol";
-import "erc4626-tests\ERC4626.prop.sol";
 
-    using SafeERC20 for IERC20;
+using SafeERC20 for IERC20;
 
 contract IrautumPool is IIrautumPool, ERC20 {
     /// @inheritdoc IIrautumPool
