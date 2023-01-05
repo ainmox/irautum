@@ -156,7 +156,19 @@ interface IIrautumPool is IERC4626 {
             UFixed256x18 borrowGrowthFactor,
             uint256 lastSyncTimestamp
         );
-    
+
+    /// @notice The maximum number of `vault` shares that can be deposited for `receiver`
+    /// @param vault The address of the vault
+    /// @param receiver The address of the receiver
+    /// @return maxShares The maximum number of shares that can be deposited
+    function maxDeposit(IERC4626 vault, address receiver) external view returns (uint256 maxShares);
+
+    /// @notice Deposits `shares` of `vault` shares to `receiver`
+    /// @param vault The address of the vault to deposit shares from
+    /// @param shares The number of shares to deposit
+    /// @param receiver The address to receive the deposited shares
+    function deposit(IERC4626 vault, uint256 shares, address receiver) external;
+
     /// @inheritdoc IERC4626
     function asset() external view override returns (IERC20);
 
