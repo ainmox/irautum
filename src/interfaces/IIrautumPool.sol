@@ -3,6 +3,7 @@ pragma solidity >=0.5.4;
 import {IERC20} from "solidity-standard-interfaces/IERC20.sol";
 import {IERC4626} from "solidity-standard-interfaces/IERC4626.sol";
 import {UFixed256x18, UFixed16x4} from "solidity-fixed-point/FixedPointMath.sol";
+import "erc4626-tests\ERC4626.prop.sol";
 
 /// @title Interface for an Irautum asset pool
 /// @custom:coauthor Ainmox (https://github.com/ainmox)
@@ -164,6 +165,12 @@ interface IIrautumPool is IERC4626 {
     /// @notice Absorbs a list of positions
     /// @param owners The owners of the positions to absorb
     function absorb(address[] memory owners) external;
+
+    /// @notice Quotes the number of shares that would be received for a given amount of assets
+    /// @param vault The address of the vault
+    /// @param amount The amount of assets to quote
+    /// @return shares The number of shares that would be received
+    function quoteShares(IERC4626 vault, uint256 assets) external view returns (uint256 shares);
 
     /// @notice Purchases `vault` shares from the pool
     /// @notice vault The address of the vault
