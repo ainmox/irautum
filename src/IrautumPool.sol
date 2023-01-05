@@ -3,13 +3,14 @@ pragma solidity 0.8.17;
 import {Math} from "solidity-commons/Math.sol";
 import {IERC20} from "solidity-standard-interfaces/IERC20.sol";
 import {IERC4626} from "solidity-standard-interfaces/IERC4626.sol";
-import {FixedPointMath, UFixed256x18} from "solidity-fixed-point/FixedPointMath.sol";
+import {FixedPointMath, UFixed256x18, UFixed16x4} from "solidity-fixed-point/FixedPointMath.sol";
 import {ERC20} from "solidity-erc20/ERC20.sol";
 import {SafeERC20} from "solidity-erc20/SafeERC20.sol";
 
 import {IIrautumPool} from "./interfaces/IIrautumPool.sol";
 
 import {Pool, Parameters} from "./libraries/Pool.sol";
+import {Vault, Parameters as VaultParameters} from "./libraries/Vault.sol";
 
 using SafeERC20 for IERC20;
 
@@ -52,6 +53,24 @@ contract IrautumPool is IIrautumPool, ERC20 {
 
     /// @inheritdoc IIrautumPool
     UFixed256x18 public immutable override slopeUpperSupplyRate;
+
+    /** Parameters for each vault */
+    // VaultParameters internal immutable vault_00;
+    // VaultParameters internal immutable vault_01;
+    // VaultParameters internal immutable vault_02;
+    // VaultParameters internal immutable vault_03;
+    // VaultParameters internal immutable vault_04;
+    // VaultParameters internal immutable vault_05;
+    // VaultParameters internal immutable vault_06;
+    // VaultParameters internal immutable vault_07;
+    // VaultParameters internal immutable vault_08;
+    // VaultParameters internal immutable vault_09;
+    // VaultParameters internal immutable vault_10;
+    // VaultParameters internal immutable vault_11;
+    // VaultParameters internal immutable vault_12;
+    // VaultParameters internal immutable vault_13;
+    // VaultParameters internal immutable vault_14;
+    // VaultParameters internal immutable vault_15;
 
     struct State {
         // The last recorded total assets supplied plus interest earned
@@ -102,6 +121,33 @@ contract IrautumPool is IIrautumPool, ERC20 {
             slopeUpperSupplyRate:   slopeUpperSupplyRate
         });
     }
+
+    /// @inheritdoc IIrautumPool
+    function isSupportedVault(IERC4626 vault) public pure returns (bool supported) { }
+
+    /// @inheritdoc IIrautumPool
+    function vaultParameters(uint256 index)
+        public
+        view
+        returns (
+            IERC4626 vault,
+            UFixed16x4 borrowFactor,
+            UFixed16x4 liquidationFactor,
+            UFixed16x4 liquidationPenalty
+        )
+    { }
+
+    /// @inheritdoc IIrautumPool
+    function vaultParameters(IERC4626 vault)
+        public
+        view
+        returns (
+            uint256 index,
+            UFixed16x4 borrowFactor,
+            UFixed16x4 liquidationFactor,
+            UFixed16x4 liquidationPenalty
+        )
+    { }
 
     /// @notice Gets the current block timestamp
     /// @return The current block timestamp

@@ -2,7 +2,7 @@ pragma solidity >=0.5.4;
 
 import {IERC20} from "solidity-standard-interfaces/IERC20.sol";
 import {IERC4626} from "solidity-standard-interfaces/IERC4626.sol";
-import {UFixed256x18} from "solidity-fixed-point/FixedPointMath.sol";
+import {UFixed256x18, UFixed16x4} from "solidity-fixed-point/FixedPointMath.sol";
 
 /// @title Interface for an Irautum asset pool
 /// @custom:coauthor Ainmox (https://github.com/ainmox)
@@ -54,6 +54,42 @@ interface IIrautumPool is IERC4626 {
     /// @notice The slope of the supply rate when the utilization is above the optimal value
     /// @return The slope of the upper supply rate
     function slopeUpperSupplyRate() external view returns (UFixed256x18);
+
+    /// @notice Gets if `vault` is supported
+    /// @return supported `true` if the vault is supported, `false` otherwise
+    function isSupportedVault(IERC4626 vault) external view returns (bool supported);
+
+    /// @notice The parameters of a vault for a given index
+    /// @param index The index of the vault in the parameters list
+    /// @return vault The address of the vault
+    /// @return borrowFactor The minimum loan to value ratio that a position must maintain for borrowing to be enabled
+    /// @return liquidationFactor The minimum loan to value ratio that a position must maintain before liquidations are enabled
+    /// @return liquidationPenalty The penalty applied to vault shares liquidated
+    function vaultParameters(uint256 index)
+        external
+        view
+        returns (
+            IERC4626 vault,
+            UFixed16x4 borrowFactor,
+            UFixed16x4 liquidationFactor,
+            UFixed16x4 liquidationPenalty
+        );
+
+    /// @notice The parameters of a vault for a given address
+    /// @param vault The address of the vault
+    /// @return index The index of the vault in the list
+    /// @return borrowFactor The minimum loan to value ratio that a position must maintain for borrowing to be enabled
+    /// @return liquidationFactor The minimum loan to value ratio that a position must maintain before liquidations are enabled
+    /// @return liquidationPenalty The penalty applied to liquidated vault shares
+    function vaultParameters(IERC4626 vault)
+        external
+        view
+        returns (
+            uint256 index,
+            UFixed16x4 borrowFactor,
+            UFixed16x4 liquidationFactor,
+            UFixed16x4 liquidationPenalty
+        );
 
     /// @notice The proportion of lent assets that are currently being borrowed
     /// @return rate The utilization rate
