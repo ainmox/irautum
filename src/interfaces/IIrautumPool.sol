@@ -161,6 +161,12 @@ interface IIrautumPool is IERC4626 {
     /// @param owners The owners of the positions to absorb
     function absorb(address[] memory owners) external;
 
+    /// @notice Purchases `vault` shares from the pool
+    /// @notice vault The address of the vault
+    /// @param assets The amount assets to exchange for shares
+    /// @param minimumSharesOut The minimum amount of shares to receive out
+    function purchaseShares(IERC4626 vault, uint256 assets, uint256 minimumSharesOut) external;
+
     /// @notice The maximum number of `vault` shares that can be deposited for `receiver`
     /// @param vault The address of the vault
     /// @param receiver The address of the receiver

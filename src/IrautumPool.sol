@@ -11,8 +11,9 @@ import {IIrautumPool} from "./interfaces/IIrautumPool.sol";
 
 import {Pool, Parameters} from "./libraries/Pool.sol";
 import {Vault, Parameters as VaultParameters} from "./libraries/Vault.sol";
+import "erc4626-tests\ERC4626.prop.sol";
 
-using SafeERC20 for IERC20;
+    using SafeERC20 for IERC20;
 
 contract IrautumPool is IIrautumPool, ERC20 {
     /// @inheritdoc IIrautumPool
@@ -270,6 +271,9 @@ contract IrautumPool is IIrautumPool, ERC20 {
 
     /// @inheritdoc IIrautumPool
     function absorb(address[] memory owners) external { }
+
+    /// @inheritdoc IIrautumPool
+    function purchaseShares(IERC4626 vault, uint256 assets, uint256 minimumSharesOut) { }
 
     /// @inheritdoc IIrautumPool
     function maxDeposit(IERC4626 vault, address receiver) external view returns (uint256 maxShares) { }
