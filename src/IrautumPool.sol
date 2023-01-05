@@ -272,7 +272,7 @@ contract IrautumPool is IIrautumPool, ERC20 {
     function absorb(address[] memory owners) external { }
 
     /// @inheritdoc IIrautumPool
-    function purchaseShares(IERC4626 vault, uint256 assets, uint256 minimumSharesOut) { }
+    function purchaseShares(IERC4626 vault, uint256 assets, uint256 minimumSharesOut) external { }
 
     /// @inheritdoc IIrautumPool
     function maxDeposit(IERC4626 vault, address receiver) external view returns (uint256 maxShares) { }
