@@ -157,6 +157,10 @@ interface IIrautumPool is IERC4626 {
             uint256 lastSyncTimestamp
         );
 
+    /// @notice Absorbs a list of positions
+    /// @param owners The owners of the positions to absorb
+    function absorb(address[] memory owners) external;
+
     /// @notice The maximum number of `vault` shares that can be deposited for `receiver`
     /// @param vault The address of the vault
     /// @param receiver The address of the receiver
