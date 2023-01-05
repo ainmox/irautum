@@ -2,7 +2,7 @@ pragma solidity >=0.8.0 <0.9.0;
 
 import {UFixed256x18} from "solidity-fixed-point/FixedPointMath.sol";
 
-import {IrautumPool, Parameters} from "../src/IrautumPool.sol";
+import {IrautumPool, PoolParameters} from "../src/IrautumPool.sol";
 import {ERC20Mock} from "./mocks/ERC20Mock.sol";
 import {ERC4626Test} from "erc4626-tests/ERC4626.test.sol";
 
@@ -10,7 +10,7 @@ contract IrautumPoolERC4626StdTest is ERC4626Test {
     function setUp() public override {
         ERC20Mock asset = new ERC20Mock();
 
-        IrautumPool vault = new IrautumPool(Parameters({
+        IrautumPool vault = new IrautumPool(PoolParameters({
             asset:                  asset,
             depositLimit:           type(uint256).max,
             optimalUtilizationRate: UFixed256x18.wrap(0),

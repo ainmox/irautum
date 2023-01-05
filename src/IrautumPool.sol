@@ -9,7 +9,7 @@ import {SafeERC20} from "solidity-erc20/SafeERC20.sol";
 
 import {IIrautumPool} from "./interfaces/IIrautumPool.sol";
 
-import {Pool, Parameters} from "./libraries/Pool.sol";
+import {Pool, Parameters as PoolParameters} from "./libraries/Pool.sol";
 import {Vault, Parameters as VaultParameters} from "./libraries/Vault.sol";
 
 using SafeERC20 for IERC20;
@@ -86,7 +86,7 @@ contract IrautumPool is IIrautumPool, ERC20 {
     /// @inheritdoc IIrautumPool
     State public override state;
 
-    constructor(Parameters memory params) {
+    constructor(PoolParameters memory params) {
         asset                  = params.asset;
         depositLimit           = params.depositLimit;
         optimalUtilizationRate = params.optimalUtilizationRate;
@@ -104,8 +104,8 @@ contract IrautumPool is IIrautumPool, ERC20 {
 
     /// @notice The pool parameters
     /// @return params The parameters
-    function parameters() public view returns (Parameters memory params) {
-        params = Parameters({
+    function parameters() public view returns (PoolParameters memory params) {
+        params = PoolParameters({
             asset:                  asset,
             depositLimit:           depositLimit,
             optimalUtilizationRate: optimalUtilizationRate,
@@ -187,7 +187,7 @@ contract IrautumPool is IIrautumPool, ERC20 {
 
     /// @inheritdoc IIrautumPool
     function borrowRate(UFixed256x18 utilization) public view returns (UFixed256x18 rate) {
-        Parameters memory params = parameters();
+        PoolParameters memory params = parameters();
         rate = params.borrowRate(utilization);
     }
 
@@ -198,7 +198,7 @@ contract IrautumPool is IIrautumPool, ERC20 {
 
     /// @inheritdoc IIrautumPool
     function supplyRate(UFixed256x18 utilization) public view returns (UFixed256x18 rate) {
-        Parameters memory params = parameters();
+        PoolParameters memory params = parameters();
         rate = params.supplyRate(utilization);
     }
 
