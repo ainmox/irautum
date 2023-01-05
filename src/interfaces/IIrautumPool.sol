@@ -169,6 +169,18 @@ interface IIrautumPool is IERC4626 {
     /// @param receiver The address to receive the deposited shares
     function deposit(IERC4626 vault, uint256 shares, address receiver) external;
 
+    /// @notice The maximum number of `vault` shares that can be withdrawn from the position owned by `owner`
+    /// @param vault The address of the vault
+    /// @param owner The address of the owner
+    /// @return maxShares The maximum number of shares that can be withdrawn
+    function maxWithdraw(IERC4626 vault, address owner) external view returns (uint256 maxShares);
+
+    /// @notice Withdraws `shares` of `vault` shares from the position owned by `owner`
+    /// @param vault The address of the vault to withdraw shares from
+    /// @param shares The number of shares to withdraw
+    /// @param owner The address of the owner
+    function withdraw(IERC4626 vault, uint256 shares, address receiver, address owner) external;
+
     /// @inheritdoc IERC4626
     function asset() external view override returns (IERC20);
 
