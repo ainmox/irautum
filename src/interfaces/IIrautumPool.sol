@@ -3,7 +3,6 @@ pragma solidity >=0.5.4;
 import {IERC20} from "solidity-standard-interfaces/IERC20.sol";
 import {IERC4626} from "solidity-standard-interfaces/IERC4626.sol";
 import {UFixed256x18, UFixed16x4} from "solidity-fixed-point/FixedPointMath.sol";
-import "erc4626-tests\ERC4626.prop.sol";
 
 /// @title Interface for an Irautum asset pool
 /// @custom:coauthor Ainmox (https://github.com/ainmox)
@@ -156,6 +155,59 @@ interface IIrautumPool is IERC4626 {
             uint256 totalBorrowed,
             UFixed256x18 borrowGrowthFactor,
             uint256 lastSyncTimestamp
+        );
+
+    /// @notice The last recorded state of a position
+    /// @param owner The address of the owner
+    /// @return borrowed The last recorded amount of assets borrowed plus interest
+    /// @return borrowGrowthFactor The last recorded borrow growth factor
+    /// @return vaults A bit set indicating which vault shares comprise the position
+    /// @return syncTimestamp The last recorded time that the position was synchronized
+    function positions(address owner)
+        external
+        view
+        returns (
+            uint256 borrowed,
+            UFixed256x18 borrowGrowthFactor,
+            uint256 vaults,
+            uint256 syncTimestamp
+        );
+
+    /// @notice The amount of `vault` shares that `owner` has deposited in their position
+    /// @param owner The address of the owner
+    /// @param vault The address of the vault
+    /// @return balance The balance of `vault` shares
+    function balances(address owner, IERC4626 vault) external view returns (uint256 balance);
+
+    /// @notice Previews synchronizing a position
+    /// @param owner The address of the owner
+    /// @return borrowed The amount of assets borrowed plus interest
+    /// @return borrowGrowthFactor The borrow growth factor
+    /// @return vaults A bit set indicating which vault shares comprise the position
+    /// @return syncTimestamp The last recorded time that the position was synchronized
+    function previewSyncPosition(address owner)
+        external
+        view
+        returns (
+            uint256 borrowed,
+            UFixed256x18 borrowGrowthFactor,
+            uint256 vaults,
+            uint256 syncTimestamp
+        );
+
+    /// @notice Synchronizes a position
+    /// @param owner The owner of the position
+    /// @return borrowed The amount of assets borrowed plus interest
+    /// @return borrowGrowthFactor The borrow growth factor
+    /// @return vaults A bit set indicating which vault shares comprise the position
+    /// @return syncTimestamp The last recorded time that the position was synchronized
+    function syncPosition(address owner)
+        external
+        returns (
+            uint256 borrowed,
+            UFixed256x18 borrowGrowthFactor,
+            uint256 vaults,
+            uint256 syncTimestamp
         );
 
     /// @notice Gets if the position owned by `owner` is liquidatable

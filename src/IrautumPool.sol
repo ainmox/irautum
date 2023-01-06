@@ -86,6 +86,23 @@ contract IrautumPool is IIrautumPool, ERC20 {
     /// @inheritdoc IIrautumPool
     State public override state;
 
+    struct Position {
+        // The last recorded amount of assets borrowed plus interest
+        uint256 borrowed;
+        // The last recorded borrow growth factor
+        UFixed256x18 borrowGrowthFactor;
+        // A bit set indicating which vault shares comprise the position
+        uint256 vaults;
+        // The last recorded time that the position was synchronized
+        uint256 syncTimestamp;
+    }
+
+    /// @inheritdoc IIrautumPool
+    mapping(address => Position) public override positions;
+
+    /// @inheritdoc IIrautumPool
+    mapping(address => mapping(IERC4626 => uint256)) public override balances;
+
     constructor(PoolParameters memory params) {
         asset                  = params.asset;
         depositLimit           = params.depositLimit;
@@ -267,6 +284,29 @@ contract IrautumPool is IIrautumPool, ERC20 {
             });
         }
     }
+
+    /// @inheritdoc IIrautumPool
+    function previewSyncPosition(address owner)
+        external
+        view
+        returns (
+            uint256 borrowed,
+            UFixed256x18 borrowGrowthFactor,
+            uint256 vaults,
+            uint256 syncTimestamp
+        )
+    { }
+
+    /// @inheritdoc IIrautumPool
+    function syncPosition(address owner)
+        external
+        returns (
+            uint256 borrowed,
+            UFixed256x18 borrowGrowthFactor,
+            uint256 vaults,
+            uint256 syncTimestamp
+        )
+    { }
 
     /// @inheritdoc IIrautumPool
     function isLiquidatable(address owner) external view returns (bool status) { }
