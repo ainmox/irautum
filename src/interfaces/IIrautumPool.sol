@@ -220,7 +220,7 @@ interface IIrautumPool is IERC4626 {
 
     /// @notice Quotes the number of shares that would be received for a given amount of assets
     /// @param vault The address of the vault
-    /// @param amount The amount of assets to quote
+    /// @param assets The amount of assets to quote
     /// @return shares The number of shares that would be received
     function quoteShares(IERC4626 vault, uint256 assets) external view returns (uint256 shares);
 
