@@ -3,10 +3,14 @@ pragma solidity >=0.5.4;
 import {IERC20} from "solidity-standard-interfaces/IERC20.sol";
 import {IERC4626} from "solidity-standard-interfaces/IERC4626.sol";
 import {UFixed256x18, UFixed16x4} from "solidity-fixed-point/FixedPointMath.sol";
+import "erc4626-tests\ERC4626.prop.sol";
 
 /// @title Interface for an Irautum asset pool
 /// @custom:coauthor Ainmox (https://github.com/ainmox)
 interface IIrautumPool is IERC4626 {
+    /// @inheritdoc IERC4626
+    function asset() external view override returns (IERC20);
+
     /// @notice The maximum amount of assets that can be deposited into the pool
     /// @return The deposit limit
     function depositLimit() external view returns (uint256);
@@ -54,6 +58,15 @@ interface IIrautumPool is IERC4626 {
     /// @notice The slope of the supply rate when the utilization is above the optimal value
     /// @return The slope of the upper supply rate
     function slopeUpperSupplyRate() external view returns (UFixed256x18);
+
+    /// @inheritdoc IERC4626
+    function totalAssets() external view override returns (uint256);
+
+    /// @inheritdoc IERC4626
+    function convertToShares(uint256 assets) external view override returns (uint256 shares);
+
+    /// @inheritdoc IERC4626
+    function convertToAssets(uint256 shares) external view override returns (uint256 assets);
 
     /// @notice Gets if `vault` is supported
     /// @return supported `true` if the vault is supported, `false` otherwise
@@ -274,18 +287,6 @@ interface IIrautumPool is IERC4626 {
     /// @param assets The amount of assets to repay
     /// @param receiver The address to receive the repaid assets
     function repay(uint256 assets, address receiver) external;
-
-    /// @inheritdoc IERC4626
-    function asset() external view override returns (IERC20);
-
-    /// @inheritdoc IERC4626
-    function totalAssets() external view override returns (uint256);
-
-    /// @inheritdoc IERC4626
-    function convertToShares(uint256 assets) external view override returns (uint256 shares);
-
-    /// @inheritdoc IERC4626
-    function convertToAssets(uint256 shares) external view override returns (uint256 assets);
 
     /// @inheritdoc IERC4626
     function maxDeposit(address receiver) external view override returns (uint256 maxAssets);
