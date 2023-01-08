@@ -128,7 +128,7 @@ interface IIrautumPool is IERC4626 {
     /// @notice The last recorded state of the pool
     /// @return lastTotalSupplied The last recorded total assets supplied for borrowing plus interest earned
     /// @return lastTotalBorrowed The last recorded total assets borrowed plus interest accrued
-    /// @return lastBorrowGrowthFactor The last recorded borrow growth factor
+    /// @return lastBorrowGrowthFactor The last recorded cumulative borrow rate
     /// @return lastSyncTimestamp The last recorded time that the pool was synchronized
     function state()
         external
@@ -143,7 +143,7 @@ interface IIrautumPool is IERC4626 {
     /// @notice Previews synchronizing the pool
     /// @return totalSupplied The total assets supplied for borrowing plus interest earned
     /// @return totalBorrowed The total borrowed assets plus interest accrued
-    /// @return borrowGrowthFactor The borrow growth factor
+    /// @return cumulativeBorrowRate The cumulative borrow rate
     /// @return lastSyncTimestamp The last recorded time that the pool was synchronized, excluding this call
     function previewSync()
         external
@@ -151,28 +151,28 @@ interface IIrautumPool is IERC4626 {
         returns (
             uint256 totalSupplied,
             uint256 totalBorrowed,
-            UFixed256x18 borrowGrowthFactor,
+            UFixed256x18 cumulativeBorrowRate,
             uint256 lastSyncTimestamp
         );
 
     /// @notice Synchronizes the pool
     /// @return totalSupplied The total assets supplied for borrowing plus interest earned
     /// @return totalBorrowed The total borrowed assets plus interest accrued
-    /// @return borrowGrowthFactor The borrow growth factor
+    /// @return cumulativeBorrowRate The cumulative borrow rate
     /// @return lastSyncTimestamp The last recorded time that the pool was synchronized, excluding this call
     function sync()
         external
         returns (
             uint256 totalSupplied,
             uint256 totalBorrowed,
-            UFixed256x18 borrowGrowthFactor,
+            UFixed256x18 cumulativeBorrowRate,
             uint256 lastSyncTimestamp
         );
 
     /// @notice The last recorded state of a position
     /// @param owner The address of the owner
     /// @return borrowed The last recorded amount of assets borrowed plus interest
-    /// @return borrowGrowthFactor The last recorded borrow growth factor
+    /// @return cumulativeBorrowRate The last recorded borrow growth factor
     /// @return vaults A bit set indicating which vault shares comprise the position
     /// @return syncTimestamp The last recorded time that the position was synchronized
     function positions(address owner)
@@ -180,7 +180,7 @@ interface IIrautumPool is IERC4626 {
         view
         returns (
             uint256 borrowed,
-            UFixed256x18 borrowGrowthFactor,
+            UFixed256x18 cumulativeBorrowRate,
             uint256 vaults,
             uint256 syncTimestamp
         );
@@ -194,7 +194,7 @@ interface IIrautumPool is IERC4626 {
     /// @notice Previews synchronizing a position
     /// @param owner The address of the owner
     /// @return borrowed The amount of assets borrowed plus interest
-    /// @return borrowGrowthFactor The borrow growth factor
+    /// @return cumulativeBorrowRate The borrow growth factor
     /// @return vaults A bit set indicating which vault shares comprise the position
     /// @return syncTimestamp The last recorded time that the position was synchronized
     function previewSyncPosition(address owner)
@@ -202,7 +202,7 @@ interface IIrautumPool is IERC4626 {
         view
         returns (
             uint256 borrowed,
-            UFixed256x18 borrowGrowthFactor,
+            UFixed256x18 cumulativeBorrowRate,
             uint256 vaults,
             uint256 syncTimestamp
         );
@@ -210,14 +210,14 @@ interface IIrautumPool is IERC4626 {
     /// @notice Synchronizes a position
     /// @param owner The owner of the position
     /// @return borrowed The amount of assets borrowed plus interest
-    /// @return borrowGrowthFactor The borrow growth factor
+    /// @return cumulativeBorrowRate The borrow growth factor
     /// @return vaults A bit set indicating which vault shares comprise the position
     /// @return syncTimestamp The last recorded time that the position was synchronized
     function syncPosition(address owner)
         external
         returns (
             uint256 borrowed,
-            UFixed256x18 borrowGrowthFactor,
+            UFixed256x18 cumulativeBorrowRate,
             uint256 vaults,
             uint256 syncTimestamp
         );

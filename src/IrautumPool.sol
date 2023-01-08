@@ -78,7 +78,7 @@ contract IrautumPool is IIrautumPool, ERC20 {
         // The last recorded total borrowed assets plus interest charged
         uint256 totalBorrowed;
         // The last recorded borrow growth factor
-        UFixed256x18 borrowGrowthFactor;
+        UFixed256x18 cumulativeBorrowRate;
         // The last recorded time that the pool was synchronized
         uint256 syncTimestamp;
     }
@@ -90,7 +90,7 @@ contract IrautumPool is IIrautumPool, ERC20 {
         // The last recorded amount of assets borrowed plus interest
         uint256 borrowed;
         // The last recorded borrow growth factor
-        UFixed256x18 borrowGrowthFactor;
+        UFixed256x18 cumulativeBorrowRate;
         // A bit set indicating which vault shares comprise the position
         uint256 vaults;
         // The last recorded time that the position was synchronized
@@ -177,7 +177,7 @@ contract IrautumPool is IIrautumPool, ERC20 {
         (
             uint256 totalSupplied,
             /* uint256 totalBorrowed */,
-            /* UFixed256x18 borrowGrowthFactor */,
+            /* UFixed256x18 cumulativeBorrowRate */,
             /* uint256 lastSyncTimestamp */
         ) = previewSync();
 
@@ -189,7 +189,7 @@ contract IrautumPool is IIrautumPool, ERC20 {
         (
             uint256 totalSupplied,
             uint256 totalBorrowed,
-            /* UFixed256x18 borrowGrowthFactor */,
+            /* UFixed256x18 cumulativeBorrowRate */,
             /* uint256 lastSyncTimestamp */
         ) = previewSync();
 
@@ -226,14 +226,14 @@ contract IrautumPool is IIrautumPool, ERC20 {
         returns (
             uint256 totalSupplied,
             uint256 totalBorrowed,
-            UFixed256x18 borrowGrowthFactor,
+            UFixed256x18 cumulativeBorrowRate,
             uint256 lastSyncTimestamp
         )
     {
         (
             totalSupplied,
             totalBorrowed,
-            borrowGrowthFactor,
+            cumulativeBorrowRate,
             lastSyncTimestamp
         ) = this.state();
 
@@ -254,7 +254,7 @@ contract IrautumPool is IIrautumPool, ERC20 {
             totalSupplied = FixedPointMath.round(FixedPointMath.mul(FixedPointMath.exp(supplyExponent), totalSupplied));
             totalBorrowed = FixedPointMath.round(FixedPointMath.mul(FixedPointMath.exp(borrowExponent), totalBorrowed));
 
-            borrowGrowthFactor = FixedPointMath.add(borrowGrowthFactor, borrowExponent);
+            cumulativeBorrowRate = FixedPointMath.add(cumulativeBorrowRate, borrowExponent);
         }
     }
 
@@ -264,14 +264,14 @@ contract IrautumPool is IIrautumPool, ERC20 {
         returns (
             uint256 totalSupplied,
             uint256 totalBorrowed,
-            UFixed256x18 borrowGrowthFactor,
+            UFixed256x18 cumulativeBorrowRate,
             uint256 lastSyncTimestamp
         )
     {
         (
             totalSupplied,
             totalBorrowed,
-            borrowGrowthFactor,
+            cumulativeBorrowRate,
             lastSyncTimestamp
         ) = previewSync();
 
@@ -279,7 +279,7 @@ contract IrautumPool is IIrautumPool, ERC20 {
             state = State({
                 totalSupplied: totalSupplied,
                 totalBorrowed: totalBorrowed,
-                borrowGrowthFactor: borrowGrowthFactor,
+                cumulativeBorrowRate: cumulativeBorrowRate,
                 syncTimestamp: lastSyncTimestamp
             });
         }
@@ -291,7 +291,7 @@ contract IrautumPool is IIrautumPool, ERC20 {
         view
         returns (
             uint256 borrowed,
-            UFixed256x18 borrowGrowthFactor,
+            UFixed256x18 cumulativeBorrowRate,
             uint256 vaults,
             uint256 syncTimestamp
         )
@@ -302,7 +302,7 @@ contract IrautumPool is IIrautumPool, ERC20 {
         external
         returns (
             uint256 borrowed,
-            UFixed256x18 borrowGrowthFactor,
+            UFixed256x18 cumulativeBorrowRate,
             uint256 vaults,
             uint256 syncTimestamp
         )
@@ -359,7 +359,7 @@ contract IrautumPool is IIrautumPool, ERC20 {
         (
             uint256 totalSupplied,
             /* uint256 totalBorrowed */,
-            /* UFixed256x18 borrowGrowthFactor */,
+            /* UFixed256x18 cumulativeBorrowRate */,
             /* uint256 lastSyncTimestamp */
         ) = previewSync();
 
@@ -381,7 +381,7 @@ contract IrautumPool is IIrautumPool, ERC20 {
         (
             uint256 totalSupplied,
             /* uint256 totalBorrowed */,
-            /* UFixed256x18 borrowGrowthFactor */,
+            /* UFixed256x18 cumulativeBorrowRate */,
             /* uint256 lastSyncTimestamp */
         ) = sync();
 
@@ -414,7 +414,7 @@ contract IrautumPool is IIrautumPool, ERC20 {
         (
             uint256 totalSupplied,
             /* uint256 totalBorrowed */,
-            /* UFixed256x18 borrowGrowthFactor */,
+            /* UFixed256x18 cumulativeBorrowRate */,
             /* uint256 lastSyncTimestamp */
         ) = sync();
 
@@ -456,7 +456,7 @@ contract IrautumPool is IIrautumPool, ERC20 {
         (
             uint256 totalSupplied,
             /* uint256 totalBorrowed */,
-            /* UFixed256x18 borrowGrowthFactor */,
+            /* UFixed256x18 cumulativeBorrowRate */,
             /* uint256 lastSyncTimestamp */
         ) = sync();
 
@@ -499,7 +499,7 @@ contract IrautumPool is IIrautumPool, ERC20 {
         (
             uint256 totalSupplied,
             /* uint256 totalBorrowed */,
-            /* UFixed256x18 borrowGrowthFactor */,
+            /* UFixed256x18 cumulativeBorrowRate */,
             /* uint256 lastSyncTimestamp */
         ) = sync();
 
