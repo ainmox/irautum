@@ -7,9 +7,6 @@
 [submodule "lib/solidity-standard-interfaces"]
 	path = lib/solidity-standard-interfaces
 	url = https://github.com/ainmox/solidity-standard-interfaces
-[submodule "lib/solidity-erc20"]
-	path = lib/solidity-erc20
-	url = https://github.com/ainmox/solidity-erc20
 [submodule "lib/solidity-commons"]
 	path = lib/solidity-commons
 	url = https://github.com/ainmox/solidity-commons
