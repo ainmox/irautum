@@ -238,7 +238,7 @@ contract IrautumPool is IIrautumPool, ERC20 {
         ) = this.state();
 
         if (lastSyncTimestamp < timestamp()) {
-            uint256 secondsElapsed;
+            /* uint256 secondsElapsed;
             unchecked {
                 secondsElapsed = timestamp() - lastSyncTimestamp;
             }
@@ -255,6 +255,7 @@ contract IrautumPool is IIrautumPool, ERC20 {
             totalBorrowed = FixedPointMath.round(FixedPointMath.mul(FixedPointMath.exp(borrowExponent), totalBorrowed));
 
             cumulativeBorrowRate = FixedPointMath.add(cumulativeBorrowRate, borrowExponent);
+            */
         }
     }
 
